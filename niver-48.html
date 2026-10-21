@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reflexão aos 48 Anos — 21/10/2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-            color: #e2e8f0;
+            background-color: #09090b;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(217, 119, 6, 0.12) 0%, transparent 65%),
+                radial-gradient(circle at 100% 100%, rgba(180, 83, 9, 0.08) 0%, transparent 50%);
+            color: #f4f4f5;
         }
         .font-serif-title {
             font-family: 'Cinzel', serif;
@@ -19,93 +22,114 @@
             font-family: 'Lora', serif;
         }
         .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(24, 24, 27, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(217, 119, 6, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
         }
-        .accent-gradient {
-            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fef3c7 0%, #f59e0b 50%, #d97706 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .gold-border-glow {
+            box-shadow: 0 0 25px rgba(217, 119, 6, 0.25);
+        }
     </style>
 </head>
-<body class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 flex flex-col justify-between">
+<body class="min-h-screen py-10 px-4 sm:px-6 lg:px-8 flex flex-col justify-between selection:bg-amber-500 selection:text-zinc-950">
 
     <div class="max-w-4xl mx-auto w-full">
         <!-- Header / Título -->
         <header class="text-center mb-10">
-            <span class="text-xs uppercase tracking-widest font-semibold text-sky-400 bg-sky-950/60 border border-sky-800/50 px-4 py-1.5 rounded-full inline-block mb-3">
+            <div class="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-semibold text-amber-400 bg-amber-950/40 border border-amber-600/40 px-5 py-2 rounded-full mb-4 shadow-sm">
+                <svg class="w-3.5 h-3.5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                </svg>
                 21 de Outubro de 2026
-            </span>
-            <h1 class="text-3xl sm:text-5xl font-bold font-serif-title text-slate-100 tracking-wide mb-2">
-                Reflexão aos <span class="accent-gradient">48 Anos</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-extrabold font-serif-title text-zinc-100 tracking-wide mb-3">
+                Reflexão aos <span class="gold-gradient-text">48 Anos</span>
             </h1>
-            <p class="text-slate-400 italic font-serif-body text-base sm:text-lg">
-                Um olhar de gratidão, honra, propósito e saudade.
+            <p class="text-amber-200/80 italic font-serif-body text-base sm:text-lg max-w-xl mx-auto">
+                Uma jornada de honra, estudo, resiliência e amor à família.
             </p>
         </header>
 
         <!-- Cartão Principal -->
-        <main class="glass-card rounded-2xl shadow-2xl overflow-hidden p-6 sm:p-10 border border-slate-700/50">
+        <main class="glass-card rounded-2xl overflow-hidden p-6 sm:p-12">
             
             <!-- Seção Perfil (Foto + Destaque) -->
-            <div class="flex flex-col md:flex-row items-center gap-8 mb-10 pb-8 border-b border-slate-700/60">
+            <div class="flex flex-col md:flex-row items-center gap-8 mb-10 pb-8 border-b border-amber-500/20">
                 <div class="relative group flex-shrink-0">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-sky-500 to-indigo-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
-                    <img src="img/3x4-IA2.png" alt="Foto de Aniversário - 48 anos" class="relative w-44 h-52 object-cover rounded-xl shadow-lg border border-slate-600">
+                    <!-- Glow ao redor da foto -->
+                    <div class="absolute -inset-1 bg-gradient-to-r from-amber-600 to-yellow-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-500"></div>
+                    <div class="relative p-1 bg-gradient-to-b from-amber-500/50 via-amber-700/30 to-zinc-900 rounded-2xl">
+                        <img src="3x4-IA2.png" onerror="this.onerror=null; this.src='3x4-IA2.png';" alt="Foto de Aniversário - 48 anos" class="w-44 h-52 object-cover rounded-xl shadow-2xl">
+                    </div>
                 </div>
+                
                 <div class="space-y-3 text-center md:text-left">
-                    <h2 class="text-2xl font-semibold text-slate-200 font-serif-title">
-                        Jornada de Integridade & Conquista
+                    <span class="text-xs uppercase tracking-widest text-amber-500 font-semibold">Trajetória & Valores</span>
+                    <h2 class="text-2xl font-bold text-zinc-100 font-serif-title">
+                        Jornada de Integridade e Mérito
                     </h2>
-                    <p class="text-slate-300 font-serif-body text-sm leading-relaxed">
-                        "Completar quase meia centena de anos é alcançar um ponto de observação privileged na vida. A certeza de ter construído uma caminhada pautada na verdade, nos estudos e no trabalho limpo traz a paz de espírito mais valiosa."
+                    <p class="text-zinc-300 font-serif-body text-sm leading-relaxed">
+                        "Completar quase meia centena de anos é alcançar um ponto de observação privilegiado na vida. A certeza de ter construído uma caminhada pautada na verdade, nos estudos e no trabalho limpo traz a paz de espírito mais valiosa."
                     </p>
                     <div class="flex flex-wrap justify-center md:justify-start gap-2 pt-2">
-                        <span class="text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700 px-3 py-1 rounded-md">Meritocracia</span>
-                        <span class="text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700 px-3 py-1 rounded-md">Honestidade</span>
-                        <span class="text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700 px-3 py-1 rounded-md">Estudos</span>
-                        <span class="text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700 px-3 py-1 rounded-md">Família</span>
+                        <span class="text-xs font-semibold bg-amber-950/60 text-amber-300 border border-amber-700/50 px-3 py-1 rounded-md">Meritocracia</span>
+                        <span class="text-xs font-semibold bg-amber-950/60 text-amber-300 border border-amber-700/50 px-3 py-1 rounded-md">Estudos</span>
+                        <span class="text-xs font-semibold bg-amber-950/60 text-amber-300 border border-amber-700/50 px-3 py-1 rounded-md">Honestidade</span>
+                        <span class="text-xs font-semibold bg-amber-950/60 text-amber-300 border border-amber-700/50 px-3 py-1 rounded-md">Família</span>
                     </div>
                 </div>
             </div>
 
             <!-- Texto da Reflexão -->
-            <article class="space-y-6 text-slate-300 font-serif-body text-base sm:text-lg leading-relaxed">
+            <article class="space-y-6 text-zinc-300 font-serif-body text-base sm:text-lg leading-relaxed">
                 
                 <p>
                     Às vésperas de completar 48 anos, no silêncio que antecede o amanhecer deste dia 21 de outubro de 2026, é impossível não olhar para trás e contemplar a caminhada até aqui.
                 </p>
 
                 <p>
-                    Completar quase meia centena de anos é alcançar um ponto de observação privilegiado na vida. Ao olhar pelo retrovisor do tempo, vejo uma trajetória que sempre foi pautada por pilares inegociáveis: a <strong class="text-sky-300 font-semibold">honestidade</strong>, a dedicação constante aos <strong class="text-sky-300 font-semibold">estudos</strong> e a crença profunda na <strong class="text-sky-300 font-semibold">meritocracia</strong>. Cada degrau alcançado, cada porta aberta e cada conquista foram fruto de empenho, trabalho limpo e do esforço próprio. Saber que tudo o que construí traz a marca da integridade e do mérito traz uma paz de espírito inestimável.
+                    Completar quase meia centena de anos é alcançar um ponto de observação privilegiado na vida. Ao olhar pelo retrovisor do tempo, vejo uma trajetória que sempre foi pautada por pilares inegociáveis: a <strong class="text-amber-300 font-semibold">honestidade</strong>, a dedicação constante aos <strong class="text-amber-300 font-semibold">estudos</strong> e a crença profunda na <strong class="text-amber-300 font-semibold">meritocracia</strong>. Cada degrau alcançado, cada porta aberta e cada conquista foram fruto de empenho, trabalho limpo e do esforço próprio. Saber que tudo o que construí traz a marca da integridade e do mérito traz uma paz de espírito inestimável.
                 </p>
 
                 <p>
-                    Amanhã, irei passar esse grande dia na <span class="italic text-slate-200">solidão de Cuiabá - MT</span>, longe fisicamente de grande parte da família e sem a presença de amigos. No entanto, essa <strong>solidão</strong> ganha um sentido profundo: não é um vazio, mas a solitude de quem está em missão. Estar aqui, superando a distância, é a prova de um sacrifício diário por um bem maior. Estou aqui lutando bravamente por dias melhores — por mim, pela minha esposa (<strong class="text-slate-100">KÉSIA</strong>), pelos meus amados pais (<strong class="text-slate-100">JOSUÉ e MARIA HELENA</strong>), pela minha filha (<strong class="text-slate-100">MARIA EDUARDA</strong>) e pela minha neta (<strong class="text-slate-100">MARCELY</strong>).
+                    Amanhã, irei passar esse grande dia na <strong class="text-amber-200">solidão de Cuiabá - MT</strong>, longe fisicamente de grande parte da família e sem a presença de amigos. No entanto, essa <strong class="text-amber-400">solidão</strong> ganha um sentido profundo: não é um vazio, mas a solitude de quem está em missão. Estar aqui, superando a distância, é a prova de um sacrifício diário por um bem maior. Estou aqui lutando bravamente por dias melhores — por mim, pela minha esposa (<strong class="text-zinc-100">KÉSIA</strong>), pelos meus amados pais (<strong class="text-zinc-100">JOSUÉ e MARIA HELENA</strong>), pela minha filha (<strong class="text-zinc-100">MARIA EDUARDA</strong>) e pela minha neta (<strong class="text-zinc-100">MARCELY</strong>).
                 </p>
 
-                <!-- Box de Homenagem / Memória -->
-                <div class="my-8 p-5 rounded-xl bg-slate-800/80 border-l-4 border-indigo-400 shadow-inner">
-                    <p class="text-slate-200 italic">
-                        E, neste dia de reflexão, a saudade aperta e se mistura à homenagem mais sincera. A lembrança do meu único irmão, <strong class="text-indigo-300 not-italic">RENATO</strong>, que partiu para o céu em <span class="text-indigo-200">03/04/2025</span>, jamais será esquecida. Ele faz parte de quem sou, da minha história e de cada passo que dou, vivendo eternamente na minha memória e no meu coração, como uma presença que a distância física e o tempo jamais conseguirão apagar.
-                    </p>
+                <!-- Box de Homenagem (Destaque Cartão Ouro/Bronze) -->
+                <div class="my-8 p-6 sm:p-7 rounded-xl bg-gradient-to-r from-amber-950/60 via-zinc-900 to-amber-950/40 border-l-4 border-amber-500 border-y border-r border-amber-500/20 shadow-xl relative overflow-hidden">
+                    <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl"></div>
+                    <div class="flex items-start gap-4">
+                        <div class="hidden sm:flex text-amber-500 mt-1">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <p class="text-amber-100/90 italic font-serif-body leading-relaxed text-base sm:text-lg">
+                            "E, neste dia de reflexão, a saudade aperta e se mistura à homenagem mais sincera. A lembrança do meu único irmão, <strong class="text-amber-300 not-italic font-semibold">RENATO</strong>, que partiu para o céu em <span class="text-amber-200 font-sans">03/04/2025</span>, jamais será esquecida. Ele faz parte de quem sou, da minha história e de cada passo que dou, vivendo eternamente na minha memória e no meu coração, como uma presença que a distância física e o tempo jamais conseguirão apagar."
+                        </p>
+                    </div>
                 </div>
 
                 <p>
-                    Dessa consciência, da saudade e desse compromisso brota uma ideia muito mais madura de <strong class="text-indigo-300 font-semibold">felicidade</strong>. Ela não habita em festas ou alardes passageiros, mas no orgulho discreto de olhar para a própria história, de honrar as raízes e de saber pelo que se luta. A felicidade, aos 48 anos, é o contentamento de ter superado tempestades com a cabeça erguida, carregando o amor por quem partiu e a força por quem ficou.
+                    Dessa consciência, da saudade e desse compromisso brota uma ideia muito mais madura de <strong class="text-amber-300 font-semibold">felicidade</strong>. Ela não habita em festas ou alardes passageiros, mas no orgulho discreto de olhar para a própria história, de honrar as raízes e de saber pelo que se luta. A felicidade, aos 48 anos, é o contentamento de ter superado tempestades com a cabeça erguida, carregando o amor por quem partiu e a força por quem ficou.
                 </p>
 
                 <p>
-                    Por tudo isso, o sentimento que amarra cada página dessa história é a <strong class="text-sky-300 font-semibold">gratidão</strong>. Gratidão pela saúde para lutar, pelos valores mantidos, pelas lições dos estudos, pelas recompensas do mérito e pelo amor incondicional que me une à minha família — aqui na Terra e na eternidade. Agradecer por este aniversário é celebrar a dádiva de chegar aos 48 anos com a consciência limpa, a alma serena e a certeza de que carregar o bem e a verdade é o nosso maior legado.
+                    Por tudo isso, o sentimento que amarra cada página dessa história é a <strong class="text-amber-300 font-semibold">gratidão</strong>. Gratidão pela saúde para lutar, pelos valores mantidos, pelas lições dos estudos, pelas recompensas do mérito e pelo amor incondicional que me une à minha família — aqui na Terra e na eternidade. Agradecer por este aniversário é celebrar a dádiva de chegar aos 48 anos com a consciência limpa, a alma serena e a certeza de que carregar o bem e a verdade é o nosso maior legado.
                 </p>
 
-                <div class="pt-6 border-t border-slate-700/60 text-center font-sans">
-                    <p class="text-sky-400 font-medium text-lg">
-                        Que este novo ciclo que se inicia amanhã traga os frutos de cada semente plantada, renovando as forças para a luta diária e mantendo viva a luz daqueles que amamos para sempre.
+                <!-- Mensagem Final em Destaque Dourado -->
+                <div class="pt-8 mt-10 border-t border-amber-500/20 text-center font-sans space-y-4">
+                    <p class="text-amber-300 font-medium text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto gold-gradient-text font-serif-title">
+                        "Que este novo ciclo que se inicia amanhã traga os frutos de cada semente plantada, renovando as forças para a luta diária e mantendo viva a luz daqueles que amamos para sempre."
                     </p>
-                    <p class="text-slate-400 text-sm mt-3 font-serif-title uppercase tracking-wider">
+                    <p class="text-amber-500/80 text-xs sm:text-sm font-serif-title uppercase tracking-widest font-semibold pt-2">
                         Parabéns por essa trajetória de coragem, saudade e dignidade!
                     </p>
                 </div>
@@ -114,8 +138,8 @@
 
         </main>
 
-        <!-- Footer -->
-        <footer class="text-center mt-8 text-slate-500 text-xs">
+        <!-- Rodapé -->
+        <footer class="text-center mt-10 text-amber-200/40 text-xs font-sans tracking-wide">
             <p>Cuiabá - MT • 21 de Outubro de 2026 • Celebração dos 48 anos</p>
         </footer>
     </div>
