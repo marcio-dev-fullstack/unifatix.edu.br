@@ -3,24 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENTIX | Cronograma de Aulas</title>
-    <link rel="stylesheet" href="style.css">
+    <title>UniFATIX | Cronograma de Aulas</title>
+    <link rel="stylesheet" href="../style.css">
+    <!-- Script de proteção de sessão -->
+    <script src="../auth-guard.js" defer></script>
 </head>
-<body>
-    <header class="navbar">
-        <div class="logo">⚡ ZENTIX <span>Cronograma</span></div>
-        <nav class="nav-links">
-            <a href="index.html">← Voltar ao Painel</a>
+<body class="student-dashboard">
+    <!-- Cabeçalho Principal -->
+    <header class="portal-header">
+        <div class="logo-area">
+            <h1>Uni<span>FATIX</span></h1>
+            <span class="badge-portal">Área do Aluno</span>
+        </div>
+        <nav class="portal-nav">
+            <a href="../index.html">Início</a>
+            <a href="catalogo-completo.html">Cursos</a>
+            <a href="cronograma.html" class="active">Cronograma</a>
+            <a href="certificados.html">Meus Certificados</a>
         </nav>
+        <div class="user-menu">
+            <span id="user-welcome-name">Estudante</span>
+            <button class="btn-logout" onclick="fazerLogout()">Sair</button>
+        </div>
     </header>
-    <main class="container">
-        <h1>Cronograma Acadêmico</h1>
-        <ul class="timeline">
-            <li><strong>Módulo 1:</strong> Introdução às Normas Reguladoras - Concluído</li>
-            <li><strong>Módulo 2:</strong> Análise de Risco e EPI - Concluído</li>
-            <li><strong>Módulo 3:</strong> Prática e Avaliação Final - Em Andamento</li>
-        </ul>
+
+    <!-- Conteúdo Principal -->
+    <main class="dashboard-container">
+        <section class="welcome-banner">
+            <h2>Cronograma Acadêmico</h2>
+            <p>Acompanhe as datas das aulas ao vivo, prazos de entrega de atividades e avaliações dos seus cursos e treinamentos.</p>
+        </section>
+
+        <section class="courses-overview">
+            <h3>Próximos Eventos e Prazos</h3>
+            <div class="courses-grid">
+                <!-- Item de Cronograma 1 -->
+                <div class="course-card">
+                    <h4>Avaliação Final - NR-10</h4>
+                    <p class="progress-text">Data Limite: 20/11/2026</p>
+                    <p class="progress-text">Status: <span style="color: var(--accent-color); font-weight: 600;">Disponível</span></p>
+                    <a href="curso.html" class="btn-continue">Acessar Prova</a>
+                </div>
+
+                <!-- Item de Cronograma 2 -->
+                <div class="course-card">
+                    <h4>Webinar ao Vivo: Práticas de Segurança (NR-35)</h4>
+                    <p class="progress-text">Data: 25/11/2026 - 19:00</p>
+                    <p class="progress-text">Status: <span style="color: var(--success-color); font-weight: 600;">Agendado</span></p>
+                    <button class="btn-certificate" onclick="alert('Link da transmissão copiado!')">Copiar Link da Sala</button>
+                </div>
+            </div>
+        </section>
     </main>
-    <script src="auth.js"></script>
+
+    <!-- Rodapé -->
+    <footer class="portal-footer">
+        <p>&copy; 2026 UniFATIX - MGRUPO. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Script de Logout e Usuário -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const sessionUser = localStorage.getItem('unifatix_user');
+            if (sessionUser) {
+                const user = JSON.parse(sessionUser);
+                const nameSpan = document.getElementById('user-welcome-name');
+                if (nameSpan && user.name) {
+                    nameSpan.textContent = user.name;
+                }
+            }
+        });
+
+        function fazerLogout() {
+            localStorage.removeItem('unifatix_user');
+            window.location.href = '../login.html';
+        }
+    </script>
 </body>
 </html>

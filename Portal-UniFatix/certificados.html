@@ -3,40 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENTIX | Meus Certificados</title>
-    <link rel="stylesheet" href="style.css">
+    <title>UniFATIX | Meus Certificados</title>
+    <link rel="stylesheet" href="../style.css">
+    <!-- Script de proteção de sessão -->
+    <script src="../auth-guard.js" defer></script>
 </head>
-<body>
-    <header class="navbar">
-        <div class="logo">⚡ ZENTIX <span>Certificados</span></div>
-        <nav class="nav-links">
-            <a href="index.html">← Voltar ao Painel</a>
+<body class="student-dashboard">
+    <!-- Cabeçalho Principal -->
+    <header class="portal-header">
+        <div class="logo-area">
+            <h1>Uni<span>FATIX</span></h1>
+            <span class="badge-portal">Área do Aluno</span>
+        </div>
+        <nav class="portal-nav">
+            <a href="../index.html">Início</a>
+            <a href="catalogo-completo.html">Cursos</a>
+            <a href="cronograma.html">Cronograma</a>
+            <a href="certificados.html" class="active">Meus Certificados</a>
         </nav>
-        <div class="user-profile">
-            <span id="user-name">Usuário</span>
+        <div class="user-menu">
+            <span id="user-welcome-name">Estudante</span>
+            <button class="btn-logout" onclick="fazerLogout()">Sair</button>
         </div>
     </header>
 
-    <main class="container">
-        <h1>Certificados Emitidos</h1>
-        <div class="cert-grid">
-            <div class="cert-card">
-                <h3>NR-10 - Segurança em Instalações Elétricas</h3>
-                <p>Carga Horária: 40 horas</p>
-                <p>Data de Conclusão: 10/11/2026</p>
-                <p>Código Hash: <code>ZX-10-884920</code></p>
-                <a href="valida.html?code=ZX-10-884920" class="btn btn-primary" target="_blank">🔍 Validar Autenticidade</a>
+    <!-- Conteúdo Principal -->
+    <main class="dashboard-container">
+        <section class="welcome-banner">
+            <h2>Certificados Conquistados</h2>
+            <p>Baixe seus certificados oficiais com validação por QR Code e código de autenticidade (Normas Reguladoras e Cursos Livres).</p>
+        </section>
+
+        <section class="courses-overview">
+            <h3>Seus Documentos Emitidos</h3>
+            <div class="courses-grid">
+                <!-- Certificado 1 -->
+                <div class="course-card">
+                    <h4>Trabalho em Altura (NR-35)</h4>
+                    <p class="progress-text">Carga Horária: 16h</p>
+                    <p class="progress-text">Concluído em: 10/10/2026</p>
+                    <p class="progress-text">Código: <strong>UNIFATIX-2026-NR35-8912</strong></p>
+                    <button class="btn-certificate" onclick="alert('Baixando certificado em PDF...')">Baixar Certificado (PDF)</button>
+                </div>
+
+                <!-- Certificado 2 -->
+                <div class="course-card">
+                    <h4>Segurança em Instalações Elétricas (NR-10)</h4>
+                    <p class="progress-text">Carga Horária: 40h</p>
+                    <p class="progress-text">Concluído em: 28/09/2026</p>
+                    <p class="progress-text">Código: <strong>UNIFATIX-2026-NR10-4421</strong></p>
+                    <button class="btn-certificate" onclick="alert('Baixando certificado em PDF...')">Baixar Certificado (PDF)</button>
+                </div>
             </div>
-            <div class="cert-card">
-                <h3>NR-33 - Espaços Confinados</h3>
-                <p>Carga Horária: 16 horas</p>
-                <p>Data de Conclusão: 02/09/2026</p>
-                <p>Código Hash: <code>ZX-33-401928</code></p>
-                <a href="valida.html?code=ZX-33-401928" class="btn btn-primary" target="_blank">🔍 Validar Autenticidade</a>
-            </div>
-        </div>
+        </section>
     </main>
 
-    <script src="auth.js"></script>
+    <!-- Rodapé -->
+    <footer class="portal-footer">
+        <p>&copy; 2026 UniFATIX - MGRUPO. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Script de Logout e Usuário -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const sessionUser = localStorage.getItem('unifatix_user');
+            if (sessionUser) {
+                const user = JSON.parse(sessionUser);
+                const nameSpan = document.getElementById('user-welcome-name');
+                if (nameSpan && user.name) {
+                    nameSpan.textContent = user.name;
+                }
+            }
+        });
+
+        function fazerLogout() {
+            localStorage.removeItem('unifatix_user');
+            window.location.href = '../login.html';
+        }
+    </script>
 </body>
 </html>

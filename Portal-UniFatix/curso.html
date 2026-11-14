@@ -3,77 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENTIX | Sala de Aula Virtual</title>
-    <link rel="stylesheet" href="style.css">
+    <title>UniFATIX | Ambiente de Aula</title>
+    <link rel="stylesheet" href="../style.css">
+    <!-- Script de proteção de sessão -->
+    <script src="../auth-guard.js" defer></script>
 </head>
-<body>
-    <header class="navbar">
-        <div class="logo">⚡ ZENTIX <span>Cursos</span></div>
-        <nav class="nav-links">
-            <a href="index.html">← Voltar aos Cursos</a>
+<body class="student-dashboard">
+    <!-- Cabeçalho Principal -->
+    <header class="portal-header">
+        <div class="logo-area">
+            <h1>Uni<span>FATIX</span></h1>
+            <span class="badge-portal">Área do Aluno</span>
+        </div>
+        <nav class="portal-nav">
+            <a href="../index.html">Início</a>
+            <a href="catalogo-completo.html">Cursos</a>
+            <a href="cronograma.html">Cronograma</a>
+            <a href="certificados.html">Meus Certificados</a>
         </nav>
-        <div class="user-profile">
-            <span id="user-badge" class="badge">Aluno</span>
-            <span id="user-name">Usuário</span>
+        <div class="user-menu">
+            <span id="user-welcome-name">Estudante</span>
+            <button class="btn-logout" onclick="fazerLogout()">Sair</button>
         </div>
     </header>
 
-    <main class="container classroom-container">
-        <div class="video-section">
-            <div class="video-player">
-                <div class="player-placeholder">
-                    <span>🎥 Player de Vídeo HD - NR-35 Trabalho em Altura</span>
-                </div>
-            </div>
-            <h2>Módulo 3: Análise de Risco e EPIs em Altura</h2>
-            <p>Aprenda os procedimentos de inspeção de cintos de segurança, trava-quedas e ancoragem adequada.</p>
-            
-            <div class="quiz-box">
-                <h3>🧪 Quiz de Fixação da Aula</h3>
-                <p>Qual elemento é obrigatório antes de iniciar qualquer atividade em altura?</p>
-                <div class="quiz-options">
-                    <button class="btn-quiz" onclick="responderQuiz(false)">A) Apenas autorização verbal</button>
-                    <button class="btn-quiz" onclick="responderQuiz(true)">B) Permissão de Trabalho (PT) e Análise Preliminar de Risco (APR)</button>
-                    <button class="btn-quiz" onclick="responderQuiz(false)">C) Nenhuma formalidade</button>
-                </div>
-                <div id="quiz-result"></div>
-            </div>
-        </div>
+    <!-- Conteúdo Principal da Aula -->
+    <main class="dashboard-container">
+        <section class="welcome-banner">
+            <h2>Módulo de Estudo: Segurança e Operação</h2>
+            <p>Assista à videoaula abaixo, acompanhe o material complementar e conclua os módulos para liberar sua avaliação.</p>
+        </section>
 
-        <aside class="notes-sidebar">
-            <h3>📝 Caderno de Anotações</h3>
-            <textarea id="notes-input" placeholder="Digite suas anotações desta aula aqui..."></textarea>
-            <button onclick="salvarAnotacoes()" class="btn btn-primary btn-block">Salvar Anotação</button>
-            <span id="save-status"></span>
-        </aside>
+        <section class="courses-overview">
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+                <!-- Área do Vídeo / Conteúdo -->
+                <div class="course-card" style="padding: 20px;">
+                    <h3 style="margin-bottom: 15px;">Aula 01: Introdução às Normas Reguladoras</h3>
+                    <div style="width: 100%; height: 350px; background-color: #0f172a; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem; margin-bottom: 20px;">
+                        [ Player de Vídeo / Transmissão da Aula ]
+                    </div>
+                    <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">
+                        Nesta aula, abordaremos os conceitos fundamentais de segurança preventiva, obrigações da empresa e do colaborador, além de diretrizes essenciais para conformidade legal e operacional.
+                    </p>
+                    <button class="btn-continue" onclick="alert('Aula concluída com sucesso! Progresso atualizado.')">Marcar Aula como Concluída</button>
+                </div>
+
+                <!-- Lista de Módulos da Aula -->
+                <div class="course-card">
+                    <h4>Conteúdo do Curso</h4>
+                    <ul style="list-style: none; padding-top: 10px; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem;">
+                        <li style="padding: 8px; background: #f1f5f9; border-radius: 4px; font-weight: 600; color: var(--accent-color);">1. Introdução às Normas (Assistindo)</li>
+                        <li style="padding: 8px; background: #f8fafc; border-radius: 4px; color: var(--text-muted);">2. Procedimentos Práticos de Segurança</li>
+                        <li style="padding: 8px; background: #f8fafc; border-radius: 4px; color: var(--text-muted);">3. Equipamentos de Proteção Individual (EPI)</li>
+                        <li style="padding: 8px; background: #f8fafc; border-radius: 4px; color: var(--text-muted);">4. Avaliação Final de Conclusão</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <script src="auth.js"></script>
+    <!-- Rodapé -->
+    <footer class="portal-footer">
+        <p>&copy; 2026 UniFATIX - MGRUPO. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Script de Logout e Usuário -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedNotes = localStorage.getItem('notes_nr35');
-            if (savedNotes) {
-                document.getElementById('notes-input').value = savedNotes;
+        window.addEventListener('DOMContentLoaded', () => {
+            const sessionUser = localStorage.getItem('unifatix_user');
+            if (sessionUser) {
+                const user = JSON.parse(sessionUser);
+                const nameSpan = document.getElementById('user-welcome-name');
+                if (nameSpan && user.name) {
+                    nameSpan.textContent = user.name;
+                }
             }
         });
 
-        function salvarAnotacoes() {
-            const notes = document.getElementById('notes-input').value;
-            localStorage.setItem('notes_nr35', notes);
-            const status = document.getElementById('save-status');
-            status.textContent = '✅ Anotações salvas!';
-            setTimeout(() => status.textContent = '', 3000);
-        }
-
-        function responderQuiz(correto) {
-            const res = document.getElementById('quiz-result');
-            if (correto) {
-                res.className = 'res-correct';
-                res.textContent = '🎉 Resposta Correta! A APR e a PT são obrigatórias segundo a NR-35.';
-            } else {
-                res.className = 'res-incorrect';
-                res.textContent = '❌ Incorreto. A alternativa correta é a B.';
-            }
+        function fazerLogout() {
+            localStorage.removeItem('unifatix_user');
+            window.location.href = '../login.html';
         }
     </script>
 </body>
