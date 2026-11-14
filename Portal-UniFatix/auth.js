@@ -1,46 +1,69 @@
-document.getElementById('loginForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const errorMsg = document.getElementById('error-message');
-    errorMsg.style.display = 'none';
+import { supabase } from './supabase.js';
 
-    try {
-        // Autenticação real com o Supabase Auth
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password,
-        });
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('login-form') || document.getElementById('form-login');
+    const errorBox = document.getElementById('error-message') || document.getElementById('login-error');
 
-        if (error) throw error;
+    if (!loginForm) {
+        console.warn('Formulário de login não encontrado nesta página.');
+        return;
+    }
 
-        const user = data.user;
-        
-        // Extrai perfil (Role) do user_metadata ou define padrão 'aluno'
-        const userRole = user.user_metadata?.role || 'aluno';
-        const userName = user.user_metadata?.name || user.email.split('@')[0];
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-        const userData = {
-            id: user.id,
-            email: user.email,
-            name: userName,
-            role: userRole,
-            token: data.session.access_token
-        };
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password') || document.getElementById('senha');
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
 
-        // Salva os dados da sessão localmente
-        localStorage.setItem('unifatix_user', JSON.stringify(userData));
+        const email = emailInput ? emailInput.value.trim() : '';
+        const password = passwordInput ? passwordInput.value : '';
 
-        // Redirecionamento baseado no perfil (RBAC)
-        if (userData.role === 'admin') {
-            window.location.href = './admin.html';
-        } else {
-            window.location.href = './index.html';
+        if (errorBox) {
+            errorBox.classList.add('hidden');
+            errorBox.textContent = '';
         }
 
-    } catch (error) {
-        errorMsg.style.display = 'block';
-        errorMsg.textContent = 'Erro ao entrar: ' + (error.message || 'Credenciais inválidas.');
-    }
+        const originalBtnText = submitBtn ? submitBtn.textContent : 'Entrar no Sistema';
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Autenticando...';
+        }
+
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+
+            if (error) {
+                throw error;
+            }
+
+            const role = data.user?.user_metadata?.role || 'aluno';
+
+            if (role === 'admin') {
+                window.location.href = 'admin.html';
+            } else {
+                window.location.href = 'index.html';
+            }
+        } catch (err) {
+            console.error('Erro de autenticação:', err);
+            const msg = err.message === 'Invalid login credentials'
+                ? 'E-mail ou senha incorretos.'
+                : `Erro ao entrar: ${err.message}`;
+
+            if (errorBox) {
+                errorBox.textContent = msg;
+                errorBox.classList.remove('hidden');
+            } else {
+                alert(msg);
+            }
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+            }
+        }
+    });
 });
