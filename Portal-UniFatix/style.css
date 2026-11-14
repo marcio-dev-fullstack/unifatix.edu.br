@@ -1,291 +1,170 @@
-/* --- 1. CONFIGURAÇÕES GERAIS --- */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* ZENTIX Design System - Dark Theme Professional */
+:root {
+    --bg-dark: #0f172a;
+    --card-bg: #1e293b;
+    --primary: #0066ff;
+    --primary-glow: #00f0ff;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --danger: #ef4444;
+    --success: #10b981;
 }
 
 body {
-    background-color: #f4f4f4;
-    color: #333;
-    line-height: 1.6;
-    overflow-x: hidden;
-}
-
-/* --- 2. HEADER E NAVBAR (MENU ESTILO APP) --- */
-header {
-    background-color: #1a1a1a;
-    color: white;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    height: 70px;
-    display: flex;
-    align-items: center;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
 }
 
 .navbar {
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 1rem 2rem;
+    background-color: var(--card-bg);
+    border-bottom: 1px solid #334155;
 }
 
 .logo {
-    color: #ffb400;
     font-size: 1.4rem;
     font-weight: bold;
-    text-decoration: none;
+    color: var(--primary-glow);
 }
-
-.nav-links {
-    display: flex;
-    list-style: none;
-}
-
-.nav-links li {
-    margin-left: 20px;
-    position: relative;
-}
+.logo span { color: var(--text-main); }
 
 .nav-links a {
-    color: white;
+    color: var(--text-muted);
     text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: 0.3s;
+    margin-right: 1.5rem;
+    transition: color 0.2s;
 }
+.nav-links a:hover, .nav-links a.active { color: var(--primary-glow); }
 
-.nav-links a:hover { color: #ffb400; }
+.user-profile { display: flex; align-items: center; gap: 0.8rem; }
 
-/* Dropdown PC */
-.dropdown-content {
-    display: none;       /* Esconde por padrão */
-    position: absolute;  /* Faz flutuar sobre o conteúdo */
-    list-style: none;    /* Remove as bolinhas da lista interna */
-    background-color: #1a1a1a;
-    min-width: 180px;
-    z-index: 1000;
+.badge {
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
 }
+.badge-student { background: #3b82f6; color: white; }
+.badge-admin { background: #8b5cf6; color: white; }
 
-.dropdown:hover .dropdown-content { 
-    display: block;      /* Mostra ao passar o mouse */
-}
+.container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
 
-#menu-check { display: none; }
-.menu-btn { display: none; color: #ffb400; font-size: 1.6rem; cursor: pointer; }
-
-/* --- 3. HERO PADRÃO --- */
-.hero {
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    text-align: center;
-    padding: 0 20px;
-}
-.hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
-
-/* --- 4. GRIDS DE 2 COLUNAS (SERVIÇOS E EQUIPE - PC) --- */
-.container {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
-
-.grid-servicos, .equipe-grid {
+.metrics-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Força 2 por linha no PC */
-    gap: 30px;
-    margin-top: 40px;
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
 }
 
-/* Membros da Equipe (SOBRE) */
-.membro-card {
-    background: white;
+.metric-card {
+    background: var(--card-bg);
+    padding: 1.5rem;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    border-bottom: 5px solid #ffb400;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centraliza tudo abaixo da foto */
-    text-align: center;
+    border: 1px solid #334155;
 }
+.metric-card h3 { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
+.metric-card .value { font-size: 2rem; font-weight: bold; color: var(--primary-glow); margin-top: 0.5rem; }
 
-.foto-container {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
+.resume-banner {
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid #4338ca;
+}
+.resume-banner .tag { background: #4f46e5; padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.8rem; }
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: #0052cc; }
+.btn-block { display: block; width: 100%; text-align: center; }
+.btn-sm { padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.85rem; border: none; cursor: pointer; }
+.btn-danger { background: var(--danger); color: white; }
+.btn-logout { background: #475569; color: white; }
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+.course-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 1px solid #334155;
+}
+.progress-bar { background: #334155; height: 8px; border-radius: 4px; overflow: hidden; margin: 1rem 0; }
+.progress-fill { background: var(--primary-glow); height: 100%; }
+
+/* Login */
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.login-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 900px;
+    background: var(--card-bg);
+    border-radius: 16px;
     overflow: hidden;
-    border: 5px solid #ffb400;
-    margin-bottom: 20px;
+    border: 1px solid #334155;
 }
-
-.foto-membro {
+.login-branding { padding: 3rem; background: #0f172a; }
+.login-card { padding: 3rem; }
+.form-group { margin-bottom: 1.2rem; }
+.form-group label { display: block; margin-bottom: 0.4rem; color: var(--text-muted); }
+.form-group input {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.membro-info h2 { font-size: 1.3rem; margin-bottom: 8px; color: #1a1a1a; }
-.membro-info p { font-size: 0.9rem; margin: 2px 0; color: #555; }
-
-.crea-box {
-    margin-top: 12px;
-    background: #eee;
-    padding: 4px 10px;
-    font-weight: bold;
-    font-size: 0.8rem;
-    display: inline-block;
-    border-radius: 4px;
-}
-
-/* --- 5. GRID DE CONTATO (3 COLUNAS - PC) --- */
-.contato-grid {
-    display: flex; /* Ativa alinhamento horizontal */
-    flex-direction: row;
-    justify-content: center;
-    gap: 25px;
-    margin: 50px auto;
-    max-width: 1100px;
-    flex-wrap: nowrap; /* Impede quebrar linha no PC */
-}
-
-.contato-card {
-    background: white;
-    padding: 40px 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    border-bottom: 5px solid #ffb400;
-    flex: 1; /* Divide o espaço igualmente em 3 */
-    max-width: 350px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.contato-icon { font-size: 3rem; color: #ffb400; margin-bottom: 15px; }
-
-.btn-contato {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: #1a1a1a;
-    color: #ffb400;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: 0.3s;
-}
-
-.btn-contato:hover { background-color: #ffb400; color: #1a1a1a; }
-
-/* --- 6. RODAPÉ E WHATSAPP --- */
-footer {
-    background-color: #1a1a1a;
+    padding: 0.8rem;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 6px;
     color: white;
-    padding: 50px 20px;
-    text-align: center;
-    margin-top: 60px;
-    width: 100%;
+    box-sizing: border-box;
 }
 
-.whatsapp-float {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background-color: #25d366;
-    color: white;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
-    z-index: 2000;
-    text-decoration: none;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
+.quick-login { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #334155; }
+.quick-buttons { display: flex; gap: 0.5rem; }
+.btn-admin-demo { background: #8b5cf6; color: white; }
+.btn-student-demo { background: #3b82f6; color: white; }
 
-/* --- 7. RESPONSIVIDADE MOBILE (PADRÃO APP) --- */
-@media (max-width: 768px) {
-    /* Botão Hambúrguer no Canto Superior Direito */
-    .menu-btn {
-        display: block;
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        z-index: 1001;
-        font-size: 1.8rem; /* Aumentado para facilitar o toque */
-        color: #ffb400;
-    }
+/* Admin Table */
+.data-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+.data-table th, .data-table td { padding: 0.8rem; text-align: left; border-bottom: 1px solid #334155; }
+.data-table th { color: var(--text-muted); }
 
-    .nav-links {
-        position: fixed;
-        top: 0;
-        right: -100%; /* Escondido à direita */
-        background-color: rgba(26, 26, 26, 0.98); /* Fundo quase opaco */
-        width: 80%; /* Ocupa a maior parte da tela */
-        height: 100vh;
-        flex-direction: column;
-        justify-content: center; /* Centraliza os links verticalmente */
-        align-items: center;
-        transition: 0.4s ease-in-out;
-        z-index: 1000;
-        box-shadow: -5px 0 15px rgba(0,0,0,0.5);
-    }
+/* Classroom */
+.classroom-container { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+.video-player { background: #000; height: 350px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+.notes-sidebar textarea { width: 100%; height: 250px; background: #0f172a; border: 1px solid #334155; color: white; padding: 0.8rem; border-radius: 8px; box-sizing: border-box; }
 
-    /* Quando o checkbox é marcado, o menu desliza para a tela */
-    #menu-check:checked ~ .nav-links {
-        right: 0;
-    }
+.quiz-box { background: #0f172a; padding: 1.5rem; border-radius: 10px; margin-top: 1.5rem; border: 1px solid #334155; }
+.btn-quiz { display: block; width: 100%; text-align: left; background: #1e293b; color: white; border: 1px solid #334155; padding: 0.8rem; border-radius: 6px; margin-top: 0.5rem; cursor: pointer; }
+.btn-quiz:hover { background: #334155; }
+.res-correct { color: var(--success); font-weight: bold; margin-top: 1rem; }
+.res-incorrect { color: var(--danger); font-weight: bold; margin-top: 1rem; }
 
-    .nav-links li {
-        margin: 20px 0; /* Mais espaçamento entre os links */
-        width: 100%;
-        text-align: center;
-    }
-
-    .nav-links a {
-        font-size: 1.4rem; /* Letras maiores para leitura no celular */
-        display: block;
-        padding: 10px;
-        width: 100%;
-    }
-
-    /* Ajuste para o Dropdown no Mobile */
-    .dropdown-content {
-        position: static; /* No mobile, ele empilha abaixo do link pai */
-        display: none;
-        background-color: #222;
-        width: 100%;
-        box-shadow: none;
-    }
-
-    .dropdown:active .dropdown-content, 
-    .dropdown:hover .dropdown-content {
-        display: block;
-    }
-
-    /* Grids de conteúdo no celular */
-    .grid-servicos, .equipe-grid, .contato-grid {
-        grid-template-columns: 1fr !important;
-        flex-direction: column;
-        gap: 20px;
-    }
-}
+/* Certificados */
+.cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+.cert-card { background: var(--card-bg); padding: 1.5rem; border-radius: 10px; border: 1px solid #334155; }
+.valida-container { max-width: 450px; margin: 5rem auto; background: var(--card-bg); padding: 2rem; border-radius: 12px; text-align: center; border: 1px solid #334155; }
+.valid-box { background: rgba(16, 185, 129, 0.2); border: 1px solid var(--success); color: var(--success); padding: 1rem; border-radius: 8px; margin-top: 1rem; }
+.invalid-box { background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: var(--danger); padding: 1rem; border-radius: 8px; margin-top: 1rem; }
