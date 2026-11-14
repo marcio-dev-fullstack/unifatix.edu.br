@@ -1,29 +1,35 @@
-document.getElementById('loginForm').addEventListener('submit', function(e) {
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
     const errorMsg = document.getElementById('error-message');
+    errorMsg.style.display = 'none';
 
-    // Exemplo de validação básica / integração (substitua pela chamada real à API/Supabase)
-    if (email && password) {
-        // Mock de usuário simulando perfil de Administrador ou Aluno
-        let userRole = 'aluno';
-        let userName = 'Estudante UniFATIX';
+    try {
+        // Autenticação real com o Supabase Auth
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
 
-        if (email.includes('admin') || email.includes('gestor')) {
-            userRole = 'admin';
-            userName = 'Administrador Sistema';
-        }
+        if (error) throw error;
+
+        const user = data.user;
+        
+        // Extrai perfil (Role) do user_metadata ou define padrão 'aluno'
+        const userRole = user.user_metadata?.role || 'aluno';
+        const userName = user.user_metadata?.name || user.email.split('@')[0];
 
         const userData = {
+            id: user.id,
+            email: user.email,
             name: userName,
-            email: email,
             role: userRole,
-            token: 'token-jwt-simulado-123456'
+            token: data.session.access_token
         };
 
-        // Salva os dados da sessão
+        // Salva os dados da sessão localmente
         localStorage.setItem('unifatix_user', JSON.stringify(userData));
 
         // Redirecionamento baseado no perfil (RBAC)
@@ -32,8 +38,9 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
         } else {
             window.location.href = './index.html';
         }
-    } else {
+
+    } catch (error) {
         errorMsg.style.display = 'block';
-        errorMsg.textContent = 'Por favor, preencha todos os campos.';
+        errorMsg.textContent = 'Erro ao entrar: ' + (error.message || 'Credenciais inválidas.');
     }
 });

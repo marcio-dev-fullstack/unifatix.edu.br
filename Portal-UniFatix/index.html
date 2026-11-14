@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UniFATIX | Área do Aluno</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Script para garantir que apenas usuários logados acessem a área do aluno -->
     <script src="auth-guard.js" defer></script>
 </head>
 <body class="student-dashboard">
-    <!-- Cabeçalho Principal -->
     <header class="portal-header">
         <div class="logo-area">
             <h1>Uni<span>FATIX</span></h1>
@@ -20,22 +18,19 @@
             <a href="cursos/catalogo-completo.html">Cursos</a>
             <a href="cursos/cronograma.html">Cronograma</a>
             <a href="cursos/certificados.html">Meus Certificados</a>
-            <a href="curculo-kesia.html">Perfil</a>
         </nav>
         <div class="user-menu">
             <span id="user-welcome-name">Estudante</span>
-            <button id="btnLogout" class="btn-logout" onclick="fazerLogout()">Sair</button>
+            <button class="btn-logout" onclick="fazerLogout()">Sair</button>
         </div>
     </header>
 
-    <!-- Conteúdo Principal do Portal -->
     <main class="dashboard-container">
         <section class="welcome-banner">
             <h2>Bem-vindo(a) à sua central de aprendizado!</h2>
-            <p>Acesse seus cursos, acompanhe seu progresso nas Normas Reguladoras (NRs) e emita seus certificados validados.</p>
+            <p>Acesse seus cursos, acompanhe seu progresso nas Normas Reguladoras (NRs) e emita seus certificados.</p>
         </section>
 
-        <!-- Seção de Atalhos e Cursos Matriculados -->
         <section class="courses-overview">
             <h3>Seus Cursos em Andamento</h3>
             <div class="courses-grid">
@@ -43,12 +38,6 @@
                     <h4>Segurança em Instalações Elétricas (NR-10)</h4>
                     <p class="progress-text">Progresso: 75%</p>
                     <div class="progress-bar"><div class="fill" style="width: 75%;"></div></div>
-                    <a href="cursos/curso.html" class="btn-continue">Continuar Estudos</a>
-                </div>
-                <div class="course-card">
-                    <h4>Espaço Confinado (NR-33)</h4>
-                    <p class="progress-text">Progresso: 30%</p>
-                    <div class="progress-bar"><div class="fill" style="width: 30%;"></div></div>
                     <a href="cursos/curso.html" class="btn-continue">Continuar Estudos</a>
                 </div>
                 <div class="course-card">
@@ -61,26 +50,19 @@
         </section>
     </main>
 
-    <!-- Rodapé -->
     <footer class="portal-footer">
         <p>&copy; 2026 UniFATIX - MGRUPO. Todos os direitos reservados.</p>
     </footer>
 
-    <!-- Script de Apoio da Sessão -->
     <script>
-        // Exibe o nome do usuário logado se disponível no localStorage
         window.addEventListener('DOMContentLoaded', () => {
             const sessionUser = localStorage.getItem('unifatix_user');
             if (sessionUser) {
                 const user = JSON.parse(sessionUser);
                 const nameSpan = document.getElementById('user-welcome-name');
-                if (nameSpan && user.name) {
-                    nameSpan.textContent = user.name;
-                }
+                if (nameSpan && user.name) nameSpan.textContent = user.name;
             }
         });
-
-        // Função de Logout
         function fazerLogout() {
             localStorage.removeItem('unifatix_user');
             window.location.href = './login.html';

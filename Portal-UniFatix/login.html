@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UniFATIX | Autenticação</title>
     <link rel="stylesheet" href="style.css">
+    <!-- SDK do Supabase via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="login-body">
     <div class="login-container">
         <div class="login-branding">
-            <h1>ZENTIX <span>Cursos</span></h1>
+            <h1>Uni<span>FATIX</span></h1>
             <p>Plataforma de Treinamento Corporativo e Qualificação Profissional.</p>
             <div class="branding-features">
                 <div>✓ Certificados com Validação por QR Code</div>
@@ -22,8 +24,8 @@
             <h2>Acesse sua Conta</h2>
             <form id="loginForm">
                 <div class="input-group">
-                    <label for="email">E-mail ou Matrícula</label>
-                    <input type="text" id="email" required placeholder="seu.email@unifatix.edu.br">
+                    <label for="email">E-mail Cadastrado</label>
+                    <input type="email" id="email" required placeholder="seu.email@unifatix.edu.br">
                 </div>
                 <div class="input-group">
                     <label for="password">Senha</label>
@@ -31,11 +33,12 @@
                 </div>
                 <button type="submit" class="btn-submit">Entrar no Sistema</button>
             </form>
-            <div id="error-message" class="error-msg" style="color: red; margin-top: 10px; display: none;"></div>
+            <div id="error-message" class="error-msg" style="color: #ef4444; margin-top: 10px; display: none; font-size: 0.9rem;"></div>
         </div>
     </div>
 
-    <!-- Script de Autenticação -->
+    <!-- Scripts de Conexão e Autenticação -->
+    <script src="supabase.js"></script>
     <script src="auth.js"></script>
 </body>
 </html>
