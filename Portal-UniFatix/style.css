@@ -1,170 +1,337 @@
-/* ZENTIX Design System - Dark Theme Professional */
+/* ==========================================
+   1. RESET E VARIÁVEIS GLOBAIS
+   ================================---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 :root {
-    --bg-dark: #0f172a;
-    --card-bg: #1e293b;
-    --primary: #0066ff;
-    --primary-glow: #00f0ff;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --danger: #ef4444;
-    --success: #10b981;
+    --primary-color: #0f172a;
+    --accent-color: #2563eb;
+    --accent-hover: #1d4ed8;
+    --bg-light: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #334155;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --success-color: #16a34a;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    background-color: var(--bg-dark);
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    min-height: 100vh;
+}
+
+/* ==========================================
+   2. TELA DE LOGIN (login.html)
+   ================================---------- */
+body.login-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    padding: 20px;
+}
+
+.login-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--card-bg);
+    width: 100%;
+    max-width: 900px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.login-branding {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    color: #ffffff;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-branding h1 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.login-branding h1 span {
+    color: #38bdf8;
+}
+
+.login-branding p {
+    color: #94a3b8;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.branding-features div {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: #cbd5e1;
+}
+
+.login-form-wrapper {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-form-wrapper h2 {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 8px;
     color: var(--text-main);
 }
 
-.navbar {
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: var(--accent-color);
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-submit:hover {
+    background-color: var(--accent-hover);
+}
+
+/* ==========================================
+   3. PORTAL DO ALUNO E HEADER (index.html)
+   ================================---------- */
+.portal-header {
+    background-color: var(--primary-color);
+    color: white;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
-    background-color: var(--card-bg);
-    border-bottom: 1px solid #334155;
+    justify-content: space-between;
+    padding: 15px 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.logo {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: var(--primary-glow);
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
-.logo span { color: var(--text-main); }
 
-.nav-links a {
-    color: var(--text-muted);
+.logo-area h1 {
+    font-size: 1.5rem;
+}
+
+.logo-area h1 span {
+    color: #38bdf8;
+}
+
+.badge-portal {
+    background-color: #334155;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.portal-nav {
+    display: flex;
+    gap: 20px;
+}
+
+.portal-nav a {
+    color: #cbd5e1;
     text-decoration: none;
-    margin-right: 1.5rem;
+    font-weight: 500;
     transition: color 0.2s;
 }
-.nav-links a:hover, .nav-links a.active { color: var(--primary-glow); }
 
-.user-profile { display: flex; align-items: center; gap: 0.8rem; }
-
-.badge {
-    padding: 0.2rem 0.6rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: bold;
-}
-.badge-student { background: #3b82f6; color: white; }
-.badge-admin { background: #8b5cf6; color: white; }
-
-.container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
-
-.metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
+.portal-nav a:hover, .portal-nav a.active {
+    color: #ffffff;
 }
 
-.metric-card {
-    background: var(--card-bg);
-    padding: 1.5rem;
-    border-radius: 10px;
-    border: 1px solid #334155;
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.9rem;
 }
-.metric-card h3 { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
-.metric-card .value { font-size: 2rem; font-weight: bold; color: var(--primary-glow); margin-top: 0.5rem; }
 
-.resume-banner {
-    background: linear-gradient(135deg, #1e1b4b, #312e81);
-    border-radius: 12px;
-    padding: 2rem;
-    margin: 2rem 0;
-    border: 1px solid #4338ca;
-}
-.resume-banner .tag { background: #4f46e5; padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.8rem; }
-
-.btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    cursor: pointer;
+.btn-logout {
+    background-color: #ef4444;
+    color: white;
     border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
 }
-.btn-primary { background: var(--primary); color: white; }
-.btn-primary:hover { background: #0052cc; }
-.btn-block { display: block; width: 100%; text-align: center; }
-.btn-sm { padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.85rem; border: none; cursor: pointer; }
-.btn-danger { background: var(--danger); color: white; }
-.btn-logout { background: #475569; color: white; }
+
+.btn-logout:hover {
+    background-color: #dc2626;
+}
+
+/* ==========================================
+   4. CONTEÚDO E CARDS DA ÁREA DO ALUNO
+   ================================---------- */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.welcome-banner {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.welcome-banner h2 {
+    margin-bottom: 10px;
+}
+
+.welcome-banner p {
+    opacity: 0.9;
+}
+
+.courses-overview h3 {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
 
 .courses-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
+    gap: 20px;
 }
+
 .course-card {
     background: var(--card-bg);
-    border-radius: 10px;
-    padding: 1.5rem;
-    border: 1px solid #334155;
-}
-.progress-bar { background: #334155; height: 8px; border-radius: 4px; overflow: hidden; margin: 1rem 0; }
-.progress-fill { background: var(--primary-glow); height: 100%; }
-
-/* Login */
-.login-body {
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
 }
-.login-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    max-width: 900px;
-    background: var(--card-bg);
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid #334155;
+
+.course-card h4 {
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    font-size: 1.1rem;
 }
-.login-branding { padding: 3rem; background: #0f172a; }
-.login-card { padding: 3rem; }
-.form-group { margin-bottom: 1.2rem; }
-.form-group label { display: block; margin-bottom: 0.4rem; color: var(--text-muted); }
-.form-group input {
+
+.progress-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+}
+
+.progress-bar {
     width: 100%;
-    padding: 0.8rem;
-    background: #0f172a;
-    border: 1px solid #334155;
-    border-radius: 6px;
-    color: white;
-    box-sizing: border-box;
+    height: 8px;
+    background-color: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
 }
 
-.quick-login { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #334155; }
-.quick-buttons { display: flex; gap: 0.5rem; }
-.btn-admin-demo { background: #8b5cf6; color: white; }
-.btn-student-demo { background: #3b82f6; color: white; }
+.progress-bar .fill {
+    height: 100%;
+    background-color: var(--success-color);
+    border-radius: 4px;
+}
 
-/* Admin Table */
-.data-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-.data-table th, .data-table td { padding: 0.8rem; text-align: left; border-bottom: 1px solid #334155; }
-.data-table th { color: var(--text-muted); }
+.btn-continue, .btn-certificate {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
 
-/* Classroom */
-.classroom-container { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
-.video-player { background: #000; height: 350px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-.notes-sidebar textarea { width: 100%; height: 250px; background: #0f172a; border: 1px solid #334155; color: white; padding: 0.8rem; border-radius: 8px; box-sizing: border-box; }
+.btn-continue {
+    background-color: #eff6ff;
+    color: var(--accent-color);
+}
 
-.quiz-box { background: #0f172a; padding: 1.5rem; border-radius: 10px; margin-top: 1.5rem; border: 1px solid #334155; }
-.btn-quiz { display: block; width: 100%; text-align: left; background: #1e293b; color: white; border: 1px solid #334155; padding: 0.8rem; border-radius: 6px; margin-top: 0.5rem; cursor: pointer; }
-.btn-quiz:hover { background: #334155; }
-.res-correct { color: var(--success); font-weight: bold; margin-top: 1rem; }
-.res-incorrect { color: var(--danger); font-weight: bold; margin-top: 1rem; }
+.btn-continue:hover {
+    background-color: #dbeafe;
+}
 
-/* Certificados */
-.cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-.cert-card { background: var(--card-bg); padding: 1.5rem; border-radius: 10px; border: 1px solid #334155; }
-.valida-container { max-width: 450px; margin: 5rem auto; background: var(--card-bg); padding: 2rem; border-radius: 12px; text-align: center; border: 1px solid #334155; }
-.valid-box { background: rgba(16, 185, 129, 0.2); border: 1px solid var(--success); color: var(--success); padding: 1rem; border-radius: 8px; margin-top: 1rem; }
-.invalid-box { background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: var(--danger); padding: 1rem; border-radius: 8px; margin-top: 1rem; }
+.btn-certificate {
+    background-color: #f0fdf4;
+    color: var(--success-color);
+}
+
+.btn-certificate:hover {
+    background-color: #dcfce7;
+}
+
+.portal-footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 50px;
+}
+
+/* ==========================================
+   5. RESPONSIVIDADE
+   ================================---------- */
+@media (max-width: 768px) {
+    .login-container {
+        grid-template-columns: 1fr;
+    }
+    .portal-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    .portal-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

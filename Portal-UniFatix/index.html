@@ -3,68 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENTIX Cursos | Área do Aluno</title>
+    <title>UniFATIX | Área do Aluno</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Script para garantir que apenas usuários logados acessem a área do aluno -->
+    <script src="auth-guard.js" defer></script>
 </head>
-<body>
-    <header class="navbar">
-        <div class="logo">⚡ ZENTIX <span>Cursos</span></div>
-        <nav class="nav-links">
-            <a href="index.html" class="active">Painel Principal</a>
-            <a href="cronograma.html">Cronograma</a>
-            <a href="certificados.html">Certificados</a>
-            <a href="admin.html" class="admin-only" style="display:none;">🛡️ Painel Admin</a>
+<body class="student-dashboard">
+    <!-- Cabeçalho Principal -->
+    <header class="portal-header">
+        <div class="logo-area">
+            <h1>Uni<span>FATIX</span></h1>
+            <span class="badge-portal">Portal do Aluno</span>
+        </div>
+        <nav class="portal-nav">
+            <a href="index.html" class="active">Início</a>
+            <a href="cursos/catalogo-completo.html">Cursos</a>
+            <a href="cursos/cronograma.html">Cronograma</a>
+            <a href="cursos/certificados.html">Meus Certificados</a>
+            <a href="curculo-kesia.html">Perfil</a>
         </nav>
-        <div class="user-profile">
-            <span id="user-badge" class="badge">Aluno</span>
-            <span id="user-name">Usuário</span>
-            <button onclick="fazerLogout()" class="btn-sm btn-logout">Sair</button>
+        <div class="user-menu">
+            <span id="user-welcome-name">Estudante</span>
+            <button id="btnLogout" class="btn-logout" onclick="fazerLogout()">Sair</button>
         </div>
     </header>
 
-    <main class="container">
-        <section class="welcome-hero">
-            <h1>Área do Aluno</h1>
-            <p>Acompanhe seu progresso, retome suas aulas e acesse seus certificados.</p>
+    <!-- Conteúdo Principal do Portal -->
+    <main class="dashboard-container">
+        <section class="welcome-banner">
+            <h2>Bem-vindo(a) à sua central de aprendizado!</h2>
+            <p>Acesse seus cursos, acompanhe seu progresso nas Normas Reguladoras (NRs) e emita seus certificados validados.</p>
         </section>
 
-        <section class="metrics-grid">
-            <div class="metric-card">
-                <h3>Aulas Concluídas</h3>
-                <div class="value" id="count-aulas">24 / 30</div>
-            </div>
-            <div class="metric-card">
-                <h3>Cursos Em Andamento</h3>
-                <div class="value" id="count-cursos">3</div>
-            </div>
-            <div class="metric-card">
-                <h3>Certificados Emitidos</h3>
-                <div class="value" id="count-certificados">2</div>
-            </div>
-        </section>
-
-        <section class="resume-banner">
-            <div class="resume-content">
-                <span class="tag">Continuar de Onde Parou</span>
-                <h2>NR-35 - Trabalho em Altura</h2>
-                <p>Módulo 3: Equipamentos de Proteção Individual (EPI) e Análise de Risco</p>
-                <a href="curso.html?id=nr35" class="btn btn-primary">▶️ Assistir Aula Agora</a>
-            </div>
-        </section>
-
-        <section class="courses-section">
-            <div class="section-header">
-                <h2>Meus Cursos</h2>
-                <input type="text" id="search-input" placeholder="Buscar curso..." onkeyup="filtrarCursos()">
-            </div>
-            <div class="courses-grid" id="courses-container">
-                <!-- Renderizado via JavaScript -->
+        <!-- Seção de Atalhos e Cursos Matriculados -->
+        <section class="courses-overview">
+            <h3>Seus Cursos em Andamento</h3>
+            <div class="courses-grid">
+                <div class="course-card">
+                    <h4>Segurança em Instalações Elétricas (NR-10)</h4>
+                    <p class="progress-text">Progresso: 75%</p>
+                    <div class="progress-bar"><div class="fill" style="width: 75%;"></div></div>
+                    <a href="cursos/curso.html" class="btn-continue">Continuar Estudos</a>
+                </div>
+                <div class="course-card">
+                    <h4>Espaço Confinado (NR-33)</h4>
+                    <p class="progress-text">Progresso: 30%</p>
+                    <div class="progress-bar"><div class="fill" style="width: 30%;"></div></div>
+                    <a href="cursos/curso.html" class="btn-continue">Continuar Estudos</a>
+                </div>
+                <div class="course-card">
+                    <h4>Trabalho em Altura (NR-35)</h4>
+                    <p class="progress-text">Progresso: 100%</p>
+                    <div class="progress-bar"><div class="fill" style="width: 100%;"></div></div>
+                    <a href="cursos/certificados.html" class="btn-certificate">Ver Certificado</a>
+                </div>
             </div>
         </section>
     </main>
 
-    <script src="courses-data.js"></script>
-    <script src="auth.js"></script>
-    <script src="app.js"></script>
+    <!-- Rodapé -->
+    <footer class="portal-footer">
+        <p>&copy; 2026 UniFATIX - MGRUPO. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Script de Apoio da Sessão -->
+    <script>
+        // Exibe o nome do usuário logado se disponível no localStorage
+        window.addEventListener('DOMContentLoaded', () => {
+            const sessionUser = localStorage.getItem('unifatix_user');
+            if (sessionUser) {
+                const user = JSON.parse(sessionUser);
+                const nameSpan = document.getElementById('user-welcome-name');
+                if (nameSpan && user.name) {
+                    nameSpan.textContent = user.name;
+                }
+            }
+        });
+
+        // Função de Logout
+        function fazerLogout() {
+            localStorage.removeItem('unifatix_user');
+            window.location.href = './login.html';
+        }
+    </script>
 </body>
 </html>

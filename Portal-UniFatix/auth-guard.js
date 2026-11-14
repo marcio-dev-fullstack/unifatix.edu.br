@@ -1,19 +1,20 @@
-// auth-guard.js - Guarda de Rota para Painel Admin
-(function verificarAcessoAdmin() {
-    const usuarioSessao = localStorage.getItem('zentix_user') || sessionStorage.getItem('zentix_user');
-    const usuario = usuarioSessao ? JSON.parse(usuarioSessao) : null;
+(function() {
+    const sessionUser = localStorage.getItem('unifatix_user');
+    const currentPath = window.location.pathname;
 
-    if (!usuario) {
-        alert('⚠️ Acesso restrito! Efetue login como Administrador.');
-        window.location.href = 'login.html';
+    // Se não estiver logado e tentar acessar uma página protegida, manda para o login
+    if (!sessionUser) {
+        if (!currentPath.includes('login.html') && !currentPath.includes('index.html')) {
+            window.location.href = './login.html';
+        }
         return;
     }
 
-    if (usuario.role !== 'admin') {
-        alert('⛔ Permissão negada! Seu perfil de Aluno não possui acesso ao Painel Admin.');
-        window.location.href = 'index.html';
-        return;
-    }
+    const user = JSON.parse(sessionUser);
 
-    console.log(`[AUTH GUARD] Acesso concedido para Admin: ${usuario.nome}`);
+    // Proteção específica para a página do Administrador
+    if (currentPath.includes('admin.html') && user.role !== 'admin') {
+        alert('Acesso negado! Área restrita a administradores.');
+        window.location.href = './index.html';
+    }
 })();
