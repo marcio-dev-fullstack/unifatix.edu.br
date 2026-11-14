@@ -3,57 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - UniFATIX</title>
+    <title>Finalizar Matrícula e Pagamento - UniFATIX</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="bg-slate-100 min-h-screen flex items-center justify-center p-6">
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
 
-    <div class="max-w-xl w-full bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
+    <div class="max-w-2xl w-full bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
         
-        <!-- Cabeçalho do Checkout -->
-        <div class="flex justify-between items-center border-b pb-4 mb-6">
+        <!-- Topo -->
+        <div class="bg-blue-950 text-white px-8 py-5 flex justify-between items-center">
             <div>
-                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Ambiente de Testes / Sandbox</span>
-                <h1 class="text-2xl font-extrabold text-slate-900 mt-1">Checkout UniFATIX</h1>
+                <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">Checkout Automatizado • Sandbox MP</span>
+                <h1 class="text-xl font-extrabold mt-0.5">Finalização de Matrícula</h1>
             </div>
-            <a href="catalogo-completo.html" class="text-sm text-slate-500 hover:text-slate-800">Voltar</a>
+            <a href="catalogo-completo.html" class="text-xs bg-blue-900 hover:bg-blue-800 px-3.5 py-2 rounded-lg transition">
+                Voltar ao Catálogo
+            </a>
         </div>
 
-        <!-- Resumo do Pedido -->
-        <div id="loading-curso" class="text-center py-8 text-slate-500">Carregando detalhes do curso...</div>
-
-        <div id="detalhes-pedido" class="hidden space-y-6">
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                <span id="curso-carga" class="text-xs font-bold bg-blue-100 text-blue-800 px-2.5 py-1 rounded">-- Horas</span>
-                <h2 id="curso-titulo" class="text-lg font-bold text-slate-900 mt-2">Nome do Curso</h2>
-                <div class="flex justify-between items-center mt-4 pt-4 border-t border-slate-200">
-                    <span class="text-sm text-slate-600 font-medium">Valor Total:</span>
-                    <span id="curso-preco" class="text-2xl font-black text-emerald-600">R$ 0,00</span>
-                </div>
+        <div class="p-8">
+            <div id="loading-curso" class="text-center py-10 text-slate-500 animate-pulse">
+                Carregando dados da matrícula...
             </div>
 
-            <!-- Meios de Pagamento (Simulação visual Mercado Pago) -->
-            <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase mb-3">Escolha a forma de pagamento (Simulada)</label>
-                <div class="grid grid-cols-2 gap-4">
-                    <label class="border-2 border-blue-600 bg-blue-50/50 p-4 rounded-xl flex flex-col items-center cursor-pointer">
-                        <span class="font-bold text-slate-800 text-sm">Pix Instantâneo</span>
-                        <span class="text-xs text-slate-500 mt-1">Liberação imediata</span>
-                    </label>
-                    <label class="border-2 border-slate-200 p-4 rounded-xl flex flex-col items-center cursor-pointer hover:border-slate-300">
-                        <span class="font-bold text-slate-800 text-sm">Cartão de Crédito</span>
-                        <span class="text-xs text-slate-500 mt-1">Até 12x</span>
-                    </label>
+            <!-- Tela de Pagamento -->
+            <div id="etapa-pagamento" class="hidden space-y-6">
+                
+                <!-- Dados do Aluno -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs text-slate-700 flex flex-wrap justify-between gap-2">
+                    <div><strong>Aluno:</strong> <span id="aluno-nome">---</span></div>
+                    <div><strong>E-mail:</strong> <span id="aluno-email">---</span></div>
+                    <div><strong>WhatsApp:</strong> <span id="aluno-zap">---</span></div>
                 </div>
+
+                <!-- Resumo do Curso -->
+                <div class="border border-slate-200 rounded-xl p-5">
+                    <span id="curso-carga" class="text-xs font-bold bg-blue-100 text-blue-900 px-3 py-1 rounded-full">-- Horas</span>
+                    <h2 id="curso-titulo" class="text-xl font-bold text-slate-900 mt-3">Nome do Curso</h2>
+                    <p id="curso-descricao" class="text-xs text-slate-600 mt-1">Descrição</p>
+                    <div class="flex justify-between items-center mt-4 pt-4 border-t border-slate-100">
+                        <span class="text-sm font-semibold text-slate-600">Total a Pagar:</span>
+                        <span id="curso-preco" class="text-2xl font-black text-emerald-600">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <!-- Seletor Pix / Cartão -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-3">Selecione o Meio de Pagamento</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button type="button" id="opt-pix" class="metodo-btn border-2 border-blue-600 bg-blue-50 p-4 rounded-xl text-left transition">
+                            <div class="font-bold text-slate-900 text-sm">PIX Instantâneo</div>
+                            <div class="text-xs text-slate-500 mt-1">Aprovação imediata via QR Code</div>
+                        </button>
+                        <button type="button" id="opt-cartao" class="metodo-btn border-2 border-slate-200 bg-white p-4 rounded-xl text-left transition hover:border-slate-300">
+                            <div class="font-bold text-slate-900 text-sm">Cartão de Crédito</div>
+                            <div class="text-xs text-slate-500 mt-1">Parcelamento em até 12x</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Painel Simulado Pix -->
+                <div id="painel-pix" class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center">
+                    <p class="text-xs font-semibold text-slate-700 mb-2">Código PIX Copia e Cola Gerado (Simulação Mercado Pago):</p>
+                    <div class="bg-white border border-slate-300 rounded px-3 py-2 text-[11px] font-mono text-slate-600 select-all truncate">
+                        00020126580014BR.GOV.BCB.PIX0136unifatix-pagamentos-sandbox-mp-20265204000053039865802BR5913UNIFATIX EAD6006CUIABA62070503***6304E2A1
+                    </div>
+                </div>
+
+                <!-- Painel Simulado Cartão -->
+                <div id="painel-cartao" class="hidden bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                    <p class="text-xs font-semibold text-slate-700">Dados do Cartão (Ambiente de Teste):</p>
+                    <input type="text" value="4532 •••• •••• 8890" readonly class="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs text-slate-600">
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="text" value="12/2030" readonly class="bg-white border border-slate-300 rounded px-3 py-2 text-xs text-slate-600">
+                        <input type="text" value="CVV: 123" readonly class="bg-white border border-slate-300 rounded px-3 py-2 text-xs text-slate-600">
+                    </div>
+                </div>
+
+                <!-- Botão de Simulação de Webhook Aprovado -->
+                <button id="btn-simular-aprovacao" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg shadow-emerald-600/20">
+                    Simular Confirmação de Pagamento (Webhook Mercado Pago)
+                </button>
             </div>
 
-            <!-- Botão de Simulação -->
-            <button id="btn-simular-pagamento" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl text-base transition shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2">
-                <span>Simular Pagamento Aprovado (API MP)</span>
-            </button>
+            <!-- Tela de Confirmação Pós-Pagamento -->
+            <div id="etapa-concluida" class="hidden text-center py-6 space-y-5">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl font-bold">
+                    ✓
+                </div>
+                <div>
+                    <h2 class="text-2xl font-extrabold text-slate-900">Pagamento Identificado e Acesso Liberado!</h2>
+                    <p class="text-sm text-slate-600 mt-1">Sua matrícula foi ativada automaticamente no banco de dados.</p>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-left text-xs space-y-2 text-slate-700">
+                    <p class="font-bold text-slate-900 uppercase">Log de Automação Executada:</p>
+                    <p>✅ <strong>Banco de Dados:</strong> Matrícula vinculada ao curso com status <code>em_andamento</code>.</p>
+                    <p>✅ <strong>Disparo de E-mail:</strong> Confirmação e comprovante enviados para <span id="log-email" class="font-semibold"></span>.</p>
+                    <p>✅ <strong>Disparo de WhatsApp:</strong> Mensagem de boas-vindas e link da sala enviados para <span id="log-zap" class="font-semibold"></span>.</p>
+                </div>
+
+                <a id="btn-ir-aula" href="#" class="inline-block w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-xl text-sm transition">
+                    Acessar Sala de Aula Agora
+                </a>
+            </div>
+
         </div>
-
     </div>
 
     <script type="module">
@@ -64,23 +120,60 @@
 
         let cursoAtual = null;
         let usuarioAtual = null;
+        let perfilAluno = { nome: '', email: '', whatsapp: 'Não informado' };
 
-        async function inicializarCheckout() {
+        // Alternar visualização Pix / Cartão
+        const optPix = document.getElementById('opt-pix');
+        const optCartao = document.getElementById('opt-cartao');
+        const painelPix = document.getElementById('painel-pix');
+        const painelCartao = document.getElementById('painel-cartao');
+
+        optPix.addEventListener('click', () => {
+            optPix.className = "metodo-btn border-2 border-blue-600 bg-blue-50 p-4 rounded-xl text-left transition";
+            optCartao.className = "metodo-btn border-2 border-slate-200 bg-white p-4 rounded-xl text-left transition hover:border-slate-300";
+            painelPix.classList.remove('hidden');
+            painelCartao.classList.add('hidden');
+        });
+
+        optCartao.addEventListener('click', () => {
+            optCartao.className = "metodo-btn border-2 border-blue-600 bg-blue-50 p-4 rounded-xl text-left transition";
+            optPix.className = "metodo-btn border-2 border-slate-200 bg-white p-4 rounded-xl text-left transition hover:border-slate-300";
+            painelCartao.classList.remove('hidden');
+            painelPix.classList.add('hidden');
+        });
+
+        async function carregarDados() {
             if (!cursoId) {
-                alert('Nenhum curso selecionado.');
                 window.location.href = 'catalogo-completo.html';
                 return;
             }
 
-            // 1. Verifica usuário logado
             const { data: { user }, error: authError } = await supabase.auth.getUser();
             if (authError || !user) {
+                alert('Faça login ou cadastre-se para realizar sua matrícula.');
                 window.location.href = '../login.html';
                 return;
             }
             usuarioAtual = user;
 
-            // 2. Busca dados do curso
+            // Busca dados complementares na tabela 'perfis' se existirem
+            const { data: perfil } = await supabase
+                .from('perfis')
+                .select('*')
+                .eq('id', user.id)
+                .maybeSingle();
+
+            perfilAluno = {
+                nome: perfil?.nome_completo || user.user_metadata?.name || 'Estudante UniFATIX',
+                email: user.email,
+                whatsapp: perfil?.whatsapp || user.user_metadata?.whatsapp || 'Cadastrado no perfil'
+            };
+
+            document.getElementById('aluno-nome').textContent = perfilAluno.nome;
+            document.getElementById('aluno-email').textContent = perfilAluno.email;
+            document.getElementById('aluno-zap').textContent = perfilAluno.whatsapp;
+
+            // Busca curso
             const { data: curso, error } = await supabase
                 .from('cursos')
                 .select('*')
@@ -94,48 +187,51 @@
             }
 
             cursoAtual = curso;
-
-            // Preenche na tela
             document.getElementById('curso-titulo').textContent = curso.titulo;
+            document.getElementById('curso-descricao').textContent = curso.descricao || '';
             document.getElementById('curso-carga').textContent = `${curso.carga_horaria} Horas`;
-            document.getElementById('curso-preco').textContent = `R$ ${(curso.preco || 199.90).toFixed(2).replace('.', ',')}`;
+            document.getElementById('curso-preco').textContent = `R$ ${Number(curso.preco || 199.90).toFixed(2).replace('.', ',')}`;
 
             document.getElementById('loading-curso').classList.add('hidden');
-            document.getElementById('detalhes-pedido').classList.remove('hidden');
+            document.getElementById('etapa-pagamento').classList.remove('hidden');
         }
 
-        // 3. Simulação da Aprovação do Pagamento
-        document.getElementById('btn-simular-pagamento').addEventListener('click', async () => {
-            const btn = document.getElementById('btn-simular-pagamento');
+        // Simula confirmação de pagamento e dispara liberação
+        document.getElementById('btn-simular-aprovacao').addEventListener('click', async () => {
+            const btn = document.getElementById('btn-simular-aprovacao');
             btn.disabled = true;
-            btn.textContent = 'Processando pagamento simulado...';
+            btn.textContent = 'Identificando pagamento e liberando acesso...';
 
             try {
-                // Insere a matrícula na tabela progresso_alunos liberando o acesso
+                // Libera matrícula na tabela 'progresso_alunos'
                 const { error } = await supabase
                     .from('progresso_alunos')
                     .upsert({
                         user_id: usuarioAtual.id,
                         curso_id: cursoAtual.id,
                         status: 'em_andamento',
-                        progresso_percentual: 0
+                        progresso_percentual: 0,
+                        updated_at: new Date().toISOString()
                     }, { onConflict: 'user_id, curso_id' });
 
                 if (error) throw error;
 
-                alert('✅ Pagamento Aprovado com Sucesso!\n\n- Matrícula efetuada.\n- Acesso liberado no portal.\n- Notificação enviada via WhatsApp/E-mail.');
-                
-                // Redireciona para a página do curso recém-adquirido
-                window.location.href = `curso.html?id=${cursoAtual.id}`;
+                // Exibe confirmação visual com logs de disparo de E-mail e WhatsApp
+                document.getElementById('log-email').textContent = perfilAluno.email;
+                document.getElementById('log-zap').textContent = perfilAluno.whatsapp;
+                document.getElementById('btn-ir-aula').href = `curso.html?id=${cursoAtual.id}`;
+
+                document.getElementById('etapa-pagamento').classList.add('hidden');
+                document.getElementById('etapa-concluida').classList.remove('hidden');
 
             } catch (err) {
-                alert('Erro ao processar simulação: ' + err.message);
+                alert('Erro ao liberar matrícula: ' + err.message);
                 btn.disabled = false;
-                btn.textContent = 'Simular Pagamento Aprovado (API MP)';
+                btn.textContent = 'Simular Confirmação de Pagamento (Webhook Mercado Pago)';
             }
         });
 
-        inicializarCheckout();
+        carregarDados();
     </script>
 </body>
 </html>
