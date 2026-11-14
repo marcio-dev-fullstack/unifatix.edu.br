@@ -3,21 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniFATIX | Painel Administrativo</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Guarda de Autenticação para proteger o painel -->
-    <script src="auth-guard.js" defer></script>
+    <title>Painel Administrativo - UniFATIX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body>
-    <header class="admin-header">
-        <h1>Painel de Gestão - UniFATIX</h1>
-        <button id="btnLogout" class="btn-logout" onclick="localStorage.removeItem('unifatix_user'); window.location.href='./login.html';">Sair</button>
+<body class="bg-slate-100 min-h-screen flex flex-col">
+
+    <!-- Cabeçalho Admin -->
+    <header class="bg-slate-900 text-white shadow-md py-4 px-6 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <span class="text-xl font-extrabold text-amber-400">UniFATIX ADMIN</span>
+            <span class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-0.5 rounded">Gestão Acadêmica</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="cursos/catalogo-completo.html" class="text-sm text-slate-300 hover:text-white">Ver Catálogo</a>
+            <button id="btn-logout" class="bg-red-600 hover:bg-red-700 px-4 py-1.5 rounded text-sm font-medium transition">Sair</button>
+        </div>
     </header>
-    <main class="admin-container">
-        <section class="admin-card">
-            <h2>Gerenciamento de Alunos e Cursos</h2>
-            <p>Bem-vindo ao painel de controle administrativo. Utilize o menu lateral para gerenciar matrículas, turmas e conteúdos.</p>
+
+    <!-- Conteúdo Principal -->
+    <main class="max-w-6xl w-full mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8 flex-grow">
+        
+        <!-- Formulário de Cadastro de Curso -->
+        <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 h-fit">
+            <h2 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">Cadastrar Novo Curso</h2>
+            <form id="form-novo-curso" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Título do Curso</label>
+                    <input type="text" id="titulo" required placeholder="Ex: Pós-Graduação em DevOps e Cloud"
+                           class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-600">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Carga Horária (Horas)</label>
+                    <input type="number" id="carga_horaria" required min="1" placeholder="Ex: 500"
+                           class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-600">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Ementa / Descrição</label>
+                    <textarea id="descricao" rows="4" required placeholder="Descreva os objetivos e público-alvo do curso..."
+                              class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-600"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2.5 rounded-lg text-sm transition shadow-sm">
+                    Salvar Curso no Catálogo
+                </button>
+            </form>
         </section>
+
+        <!-- Listagem de Cursos Cadastrados -->
+        <section class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h2 class="text-lg font-bold text-slate-800">Cursos Ativos no Banco de Dados</h2>
+                <span id="contador-cursos" class="text-xs font-semibold bg-slate-100 text-slate-700 px-3 py-1 rounded-full">0 cursos</span>
+            </div>
+
+            <div id="tabela-cursos" class="space-y-3">
+                <p class="text-slate-500 text-sm text-center py-8">Carregando cursos...</p>
+            </div>
+        </section>
+
     </main>
+
+    <script type="module">
+        import { supabase } from './supabase.js';
+
+        // 1. Guarda de Rota Admin (RBAC)
+        async function verificarPermissaoAdmin() {
+            const { data: { user }, error } = await supabase.auth.getUser();
+            if (error || !user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            if (user.user_metadata?.role !== 'admin') {
+                alert('Acesso negado: área restrita à administração.');
+                window.location.href = 'index.html';
+                return;
+            }
+            listarCursosAdmin();
+        }
+
+        // 2. Listar cursos
+        async function listarCursosAdmin() {
+            const container = document.getElementById('tabela-cursos');
+            const { data: cursos, error } = await supabase
+                .from('cursos')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                container.innerHTML = `<p class="text-red-500 text-sm">Erro: ${error.message}</p>`;
+                return;
+            }
+
+            document.getElementById('contador-cursos').textContent = `${cursos.length} curso(s)`;
+
+            if (cursos.length === 0) {
+                container.innerHTML = `<p class="text-slate-500 text-sm text-center py-8">Nenhum curso cadastrado.</p>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            cursos.forEach(curso => {
+                const item = document.createElement('div');
+                item.className = "border border-slate-200 rounded-lg p-4 flex justify-between items-start gap-4 hover:bg-slate-50";
+                item.innerHTML = `
+                    <div>
+                        <span class="text-[11px] font-bold bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded">${curso.carga_horaria}h</span>
+                        <h3 class="font-bold text-slate-900 mt-1">${curso.titulo}</h3>
+                        <p class="text-xs text-slate-600 mt-1 line-clamp-2">${curso.descricao || ''}</p>
+                    </div>
+                    <button data-id="${curso.id}" class="btn-excluir text-xs bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 px-3 py-1.5 rounded font-medium transition shrink-0">
+                        Excluir
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+
+            // Eventos de exclusão
+            document.querySelectorAll('.btn-excluir').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    if (!confirm('Deseja realmente excluir este curso do catálogo?')) return;
+
+                    const { error: delError } = await supabase.from('cursos').delete().eq('id', id);
+                    if (delError) {
+                        alert('Erro ao excluir: ' + delError.message);
+                    } else {
+                        listarCursosAdmin();
+                    }
+                });
+            });
+        }
+
+        // 3. Cadastrar novo curso
+        document.getElementById('form-novo-curso').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const titulo = document.getElementById('titulo').value.trim();
+            const carga_horaria = parseInt(document.getElementById('carga_horaria').value, 10);
+            const descricao = document.getElementById('descricao').value.trim();
+
+            const { error } = await supabase
+                .from('cursos')
+                .insert([{ titulo, carga_horaria, descricao }]);
+
+            if (error) {
+                alert('Erro ao cadastrar curso: ' + error.message);
+                return;
+            }
+
+            e.target.reset();
+            listarCursosAdmin();
+        });
+
+        // 4. Logout
+        document.getElementById('btn-logout').addEventListener('click', async () => {
+            await supabase.auth.signOut();
+            window.location.href = 'login.html';
+        });
+
+        verificarPermissaoAdmin();
+    </script>
 </body>
 </html>

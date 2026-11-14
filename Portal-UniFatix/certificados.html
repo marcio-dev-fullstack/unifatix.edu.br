@@ -3,83 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniFATIX | Meus Certificados</title>
-    <link rel="stylesheet" href="../style.css">
-    <!-- Script de proteção de sessão -->
-    <script src="../auth-guard.js" defer></script>
+    <title>Meus Certificados - UniFATIX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @media print {
+            body * { visibility: hidden; }
+            #modal-certificado, #modal-certificado * { visibility: visible; }
+            #modal-certificado { position: fixed; left: 0; top: 0; width: 100%; height: 100%; background: white; }
+            .no-print { display: none !important; }
+        }
+    </style>
 </head>
-<body class="student-dashboard">
-    <!-- Cabeçalho Principal -->
-    <header class="portal-header">
-        <div class="logo-area">
-            <h1>Uni<span>FATIX</span></h1>
-            <span class="badge-portal">Área do Aluno</span>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+    <header class="bg-blue-950 text-white shadow-md py-4 px-6 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <span class="text-xl font-extrabold tracking-wide text-blue-400">UniFATIX</span>
+            <span class="text-gray-400">|</span>
+            <span class="text-sm font-medium text-gray-200">Central de Certificação</span>
         </div>
-        <nav class="portal-nav">
-            <a href="../index.html">Início</a>
-            <a href="catalogo-completo.html">Cursos</a>
-            <a href="cronograma.html">Cronograma</a>
-            <a href="certificados.html" class="active">Meus Certificados</a>
-        </nav>
-        <div class="user-menu">
-            <span id="user-welcome-name">Estudante</span>
-            <button class="btn-logout" onclick="fazerLogout()">Sair</button>
+        <div class="flex gap-3">
+            <a href="catalogo-completo.html" class="bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded text-sm font-medium transition">Catálogo</a>
+            <a href="../index.html" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm font-medium transition">Painel do Aluno</a>
         </div>
     </header>
 
-    <!-- Conteúdo Principal -->
-    <main class="dashboard-container">
-        <section class="welcome-banner">
-            <h2>Certificados Conquistados</h2>
-            <p>Baixe seus certificados oficiais com validação por QR Code e código de autenticidade (Normas Reguladoras e Cursos Livres).</p>
-        </section>
+    <main class="max-w-5xl w-full mx-auto px-6 py-10 flex-grow">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Meus Certificados</h1>
+            <p class="text-gray-600 text-sm mt-1">Cursos concluídos com 100% de aproveitamento ficam disponíveis automaticamente para emissão.</p>
+        </div>
 
-        <section class="courses-overview">
-            <h3>Seus Documentos Emitidos</h3>
-            <div class="courses-grid">
-                <!-- Certificado 1 -->
-                <div class="course-card">
-                    <h4>Trabalho em Altura (NR-35)</h4>
-                    <p class="progress-text">Carga Horária: 16h</p>
-                    <p class="progress-text">Concluído em: 10/10/2026</p>
-                    <p class="progress-text">Código: <strong>UNIFATIX-2026-NR35-8912</strong></p>
-                    <button class="btn-certificate" onclick="alert('Baixando certificado em PDF...')">Baixar Certificado (PDF)</button>
-                </div>
-
-                <!-- Certificado 2 -->
-                <div class="course-card">
-                    <h4>Segurança em Instalações Elétricas (NR-10)</h4>
-                    <p class="progress-text">Carga Horária: 40h</p>
-                    <p class="progress-text">Concluído em: 28/09/2026</p>
-                    <p class="progress-text">Código: <strong>UNIFATIX-2026-NR10-4421</strong></p>
-                    <button class="btn-certificate" onclick="alert('Baixando certificado em PDF...')">Baixar Certificado (PDF)</button>
-                </div>
-            </div>
-        </section>
+        <div id="lista-certificados" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <p class="text-gray-500 col-span-full text-center py-10">Verificando cursos concluídos...</p>
+        </div>
     </main>
 
-    <!-- Rodapé -->
-    <footer class="portal-footer">
-        <p>&copy; 2026 UniFATIX - MGRUPO. Todos os direitos reservados.</p>
-    </footer>
+    <!-- Modal de Visualização / Impressão do Certificado -->
+    <div id="modal-certificado" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
+        <div class="bg-white max-w-4xl w-full rounded-xl shadow-2xl overflow-hidden border-8 border-double border-blue-900 p-10 text-center relative">
+            <div class="border-2 border-amber-500 p-8">
+                <p class="text-sm font-bold tracking-widest text-blue-900 uppercase">República Federativa do Brasil • Ensino Superior e Profissional</p>
+                <h2 class="text-4xl font-extrabold text-blue-950 mt-2 mb-6 tracking-wide">CERTIFICADO DE CONCLUSÃO</h2>
+                
+                <p class="text-gray-700 text-lg leading-relaxed">
+                    Certificamos que <strong id="cert-aluno" class="text-gray-900 text-xl uppercase">NOME DO ALUNO</strong> concluiu com êxito o curso de
+                </p>
+                
+                <h3 id="cert-curso" class="text-2xl font-bold text-blue-900 my-5">NOME DO CURSO</h3>
+                
+                <p class="text-gray-700 text-base">
+                    promovido pela <strong>UniFATIX</strong>, com carga horária total de <strong id="cert-horas">0</strong> horas, concluído em <span id="cert-data">--/--/----</span>.
+                </p>
 
-    <!-- Script de Logout e Usuário -->
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const sessionUser = localStorage.getItem('unifatix_user');
-            if (sessionUser) {
-                const user = JSON.parse(sessionUser);
-                const nameSpan = document.getElementById('user-welcome-name');
-                if (nameSpan && user.name) {
-                    nameSpan.textContent = user.name;
-                }
+                <div class="mt-10 pt-6 border-t border-gray-300 flex justify-around items-end text-xs text-gray-600">
+                    <div>
+                        <p class="font-bold text-gray-900">Diretoria Acadêmica UniFATIX</p>
+                        <p>Registro Digital Autenticado</p>
+                    </div>
+                    <div>
+                        <p class="font-mono text-[11px] bg-gray-100 px-3 py-1 rounded border">Código: <span id="cert-codigo">---</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-center gap-4 no-print">
+                <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-lg font-semibold text-sm shadow">
+                    Imprimir / Salvar PDF
+                </button>
+                <button id="btn-fechar-modal" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2.5 rounded-lg font-semibold text-sm">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { supabase } from '../supabase.js';
+
+        let nomeAluno = 'Estudante UniFATIX';
+
+        async function carregarCertificados() {
+            const container = document.getElementById('lista-certificados');
+
+            const { data: { user }, error: authError } = await supabase.auth.getUser();
+            if (authError || !user) {
+                window.location.href = '../login.html';
+                return;
             }
+
+            nomeAluno = user.user_metadata?.name || user.email;
+
+            // Busca cursos concluídos fazendo join com a tabela 'cursos'
+            const { data, error } = await supabase
+                .from('progresso_alunos')
+                .select(`
+                    id,
+                    updated_at,
+                    cursos (
+                        id,
+                        titulo,
+                        carga_horaria
+                    )
+                `)
+                .eq('user_id', user.id)
+                .eq('status', 'concluido');
+
+            if (error) {
+                container.innerHTML = `<p class="text-red-500 col-span-full text-center">Erro ao carregar certificados: ${error.message}</p>`;
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full bg-white border border-gray-200 rounded-lg p-8 text-center">
+                        <p class="text-gray-600 mb-4">Você ainda não possui cursos concluídos com 100%.</p>
+                        <a href="catalogo-completo.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded text-sm font-medium">
+                            Ir para Meus Cursos
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            data.forEach(item => {
+                const curso = item.cursos;
+                const dataConclusao = new Date(item.updated_at).toLocaleDateString('pt-BR');
+                const codigoAutenticacao = item.id.split('-')[0].toUpperCase();
+
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-xl shadow-sm border border-emerald-200 p-6 flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">Concluído em ${dataConclusao}</span>
+                        <h3 class="text-lg font-bold text-gray-900 mt-3">${curso.titulo}</h3>
+                        <p class="text-sm text-gray-500 mt-1">Carga Horária: ${curso.carga_horaria}h • Código: ${codigoAutenticacao}</p>
+                    </div>
+                    <button class="btn-emitir mt-5 bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-lg text-sm font-semibold transition">
+                        Visualizar Certificado
+                    </button>
+                `;
+
+                card.querySelector('.btn-emitir').addEventListener('click', () => {
+                    document.getElementById('cert-aluno').textContent = nomeAluno;
+                    document.getElementById('cert-curso').textContent = curso.titulo;
+                    document.getElementById('cert-horas').textContent = curso.carga_horaria;
+                    document.getElementById('cert-data').textContent = dataConclusao;
+                    document.getElementById('cert-codigo').textContent = codigoAutenticacao;
+                    document.getElementById('modal-certificado').classList.remove('hidden');
+                });
+
+                container.appendChild(card);
+            });
+        }
+
+        document.getElementById('btn-fechar-modal').addEventListener('click', () => {
+            document.getElementById('modal-certificado').classList.add('hidden');
         });
 
-        function fazerLogout() {
-            localStorage.removeItem('unifatix_user');
-            window.location.href = '../login.html';
-        }
+        carregarCertificados();
     </script>
 </body>
 </html>

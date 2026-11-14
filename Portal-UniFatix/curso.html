@@ -3,87 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniFATIX | Ambiente de Aula</title>
-    <link rel="stylesheet" href="../style.css">
-    <!-- Script de proteção de sessão -->
-    <script src="../auth-guard.js" defer></script>
+    <title>Detalhes do Curso - UniFATIX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="student-dashboard">
-    <!-- Cabeçalho Principal -->
-    <header class="portal-header">
-        <div class="logo-area">
-            <h1>Uni<span>FATIX</span></h1>
-            <span class="badge-portal">Área do Aluno</span>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+    <!-- Cabeçalho Institucional -->
+    <header class="bg-blue-950 text-white shadow-md py-4 px-6 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <span class="text-xl font-extrabold tracking-wide text-blue-400">UniFATIX</span>
+            <span class="text-gray-400">|</span>
+            <span class="text-sm font-medium text-gray-200">Ambiente Virtual de Aprendizagem</span>
         </div>
-        <nav class="portal-nav">
-            <a href="../index.html">Início</a>
-            <a href="catalogo-completo.html">Cursos</a>
-            <a href="cronograma.html">Cronograma</a>
-            <a href="certificados.html">Meus Certificados</a>
-        </nav>
-        <div class="user-menu">
-            <span id="user-welcome-name">Estudante</span>
-            <button class="btn-logout" onclick="fazerLogout()">Sair</button>
+        <div class="flex gap-3">
+            <a href="catalogo-completo.html" class="bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded text-sm font-medium transition">
+                Catálogo
+            </a>
+            <a href="../index.html" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm font-medium transition">
+                Painel do Aluno
+            </a>
         </div>
     </header>
 
-    <!-- Conteúdo Principal da Aula -->
-    <main class="dashboard-container">
-        <section class="welcome-banner">
-            <h2>Módulo de Estudo: Segurança e Operação</h2>
-            <p>Assista à videoaula abaixo, acompanhe o material complementar e conclua os módulos para liberar sua avaliação.</p>
-        </section>
+    <!-- Conteúdo Principal -->
+    <main class="max-w-5xl w-full mx-auto px-6 py-10 flex-grow">
+        
+        <!-- Estado de Carregamento -->
+        <div id="loading-state" class="text-center py-20">
+            <p class="text-gray-500 text-lg animate-pulse">Carregando informações do curso...</p>
+        </div>
 
-        <section class="courses-overview">
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
-                <!-- Área do Vídeo / Conteúdo -->
-                <div class="course-card" style="padding: 20px;">
-                    <h3 style="margin-bottom: 15px;">Aula 01: Introdução às Normas Reguladoras</h3>
-                    <div style="width: 100%; height: 350px; background-color: #0f172a; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem; margin-bottom: 20px;">
-                        [ Player de Vídeo / Transmissão da Aula ]
-                    </div>
-                    <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">
-                        Nesta aula, abordaremos os conceitos fundamentais de segurança preventiva, obrigações da empresa e do colaborador, além de diretrizes essenciais para conformidade legal e operacional.
-                    </p>
-                    <button class="btn-continue" onclick="alert('Aula concluída com sucesso! Progresso atualizado.')">Marcar Aula como Concluída</button>
+        <!-- Estado de Erro -->
+        <div id="error-state" class="hidden bg-red-50 border border-red-200 text-red-700 p-6 rounded-lg text-center">
+            <h2 class="text-xl font-bold mb-2">Curso não encontrado</h2>
+            <p id="error-message" class="text-sm mb-4">Não foi possível localizar o curso solicitado.</p>
+            <a href="catalogo-completo.html" class="inline-block bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded text-sm font-medium">
+                Voltar para o Catálogo
+            </a>
+        </div>
+
+        <!-- Conteúdo do Curso -->
+        <div id="curso-content" class="hidden space-y-8">
+            
+            <!-- Card Principal de Cabeçalho do Curso -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                    <span id="curso-carga" class="text-xs font-bold bg-blue-100 text-blue-900 py-1.5 px-3.5 rounded-full uppercase">
+                        -- Horas
+                    </span>
+                    <span id="curso-status-badge" class="text-xs font-semibold bg-gray-100 text-gray-700 py-1.5 px-3.5 rounded-full">
+                        Não iniciado
+                    </span>
                 </div>
 
-                <!-- Lista de Módulos da Aula -->
-                <div class="course-card">
-                    <h4>Conteúdo do Curso</h4>
-                    <ul style="list-style: none; padding-top: 10px; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem;">
-                        <li style="padding: 8px; background: #f1f5f9; border-radius: 4px; font-weight: 600; color: var(--accent-color);">1. Introdução às Normas (Assistindo)</li>
-                        <li style="padding: 8px; background: #f8fafc; border-radius: 4px; color: var(--text-muted);">2. Procedimentos Práticos de Segurança</li>
-                        <li style="padding: 8px; background: #f8fafc; border-radius: 4px; color: var(--text-muted);">3. Equipamentos de Proteção Individual (EPI)</li>
-                        <li style="padding: 8px; background: #f8fafc; border-radius: 4px; color: var(--text-muted);">4. Avaliação Final de Conclusão</li>
-                    </ul>
+                <h1 id="curso-titulo" class="text-3xl font-extrabold text-gray-900 mb-4">
+                    Título do Curso
+                </h1>
+
+                <p id="curso-descricao" class="text-gray-600 leading-relaxed text-base mb-6">
+                    Descrição detalhada do curso.
+                </p>
+
+                <!-- Barra de Progresso do Aluno -->
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-semibold text-gray-700">Seu Progresso no Curso</span>
+                        <span id="progresso-texto" class="text-sm font-bold text-blue-700">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                        <div id="progresso-barra" class="bg-blue-600 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="mt-5 flex flex-wrap gap-3">
+                        <button id="btn-avancar" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition shadow-sm">
+                            Registrar Progresso (+25%)
+                        </button>
+                        <button id="btn-concluir" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition shadow-sm">
+                            Marcar como Concluído (100%)
+                        </button>
+                    </div>
                 </div>
             </div>
-        </section>
+
+            <!-- Estrutura Modular (Conteúdo Programático) -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Módulos e Conteúdo Programático</h2>
+                <div class="divide-y divide-gray-200 border border-gray-200 rounded-lg">
+                    <div class="p-4 flex justify-between items-center hover:bg-gray-50">
+                        <div>
+                            <span class="text-xs font-bold text-blue-600 uppercase">Módulo 01</span>
+                            <h3 class="font-semibold text-gray-800">Fundamentos Teóricos e Ambientação</h3>
+                        </div>
+                        <span class="text-xs text-gray-500">Material em PDF + Videoaula</span>
+                    </div>
+                    <div class="p-4 flex justify-between items-center hover:bg-gray-50">
+                        <div>
+                            <span class="text-xs font-bold text-blue-600 uppercase">Módulo 02</span>
+                            <h3 class="font-semibold text-gray-800">Metodologias Aplicadas e Estudos de Caso</h3>
+                        </div>
+                        <span class="text-xs text-gray-500">Apostila + Estudo Dirigido</span>
+                    </div>
+                    <div class="p-4 flex justify-between items-center hover:bg-gray-50">
+                        <div>
+                            <span class="text-xs font-bold text-blue-600 uppercase">Módulo 03</span>
+                            <h3 class="font-semibold text-gray-800">Normatização Técnica e Prática Profissional</h3>
+                        </div>
+                        <span class="text-xs text-gray-500">Atividade Avaliativa</span>
+                    </div>
+                    <div class="p-4 flex justify-between items-center hover:bg-gray-50">
+                        <div>
+                            <span class="text-xs font-bold text-blue-600 uppercase">Módulo 04</span>
+                            <h3 class="font-semibold text-gray-800">Avaliação Final e Certificação</h3>
+                        </div>
+                        <span class="text-xs text-gray-500">Prova Online</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </main>
 
     <!-- Rodapé -->
-    <footer class="portal-footer">
-        <p>&copy; 2026 UniFATIX - MGRUPO. Todos os direitos reservados.</p>
+    <footer class="bg-gray-900 text-gray-400 text-center py-4 text-xs">
+        © 2026 UniFATIX - Portal Acadêmico e Educação a Distância. Todos os direitos reservados.
     </footer>
 
-    <!-- Script de Logout e Usuário -->
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const sessionUser = localStorage.getItem('unifatix_user');
-            if (sessionUser) {
-                const user = JSON.parse(sessionUser);
-                const nameSpan = document.getElementById('user-welcome-name');
-                if (nameSpan && user.name) {
-                    nameSpan.textContent = user.name;
-                }
+    <!-- Script de Integração com Supabase -->
+    <script type="module">
+        import { supabase } from '../supabase.js';
+
+        // Captura o ID do curso na URL (ex: curso.html?id=UUID)
+        const urlParams = new URLSearchParams(window.location.search);
+        const cursoId = urlParams.get('id');
+
+        const loadingEl = document.getElementById('loading-state');
+        const errorEl = document.getElementById('error-state');
+        const errorMsgEl = document.getElementById('error-message');
+        const contentEl = document.getElementById('curso-content');
+
+        let usuarioAtual = null;
+        let progressoAtual = 0;
+
+        async function inicializarPagina() {
+            if (!cursoId) {
+                mostrarErro('Nenhum identificador de curso foi informado na URL.');
+                return;
             }
+
+            try {
+                // 1. Verifica usuário autenticado
+                const { data: { user }, error: authError } = await supabase.auth.getUser();
+                if (authError || !user) {
+                    window.location.href = '../login.html';
+                    return;
+                }
+                usuarioAtual = user;
+
+                // 2. Busca os dados do curso na tabela 'cursos'
+                const { data: curso, error: cursoError } = await supabase
+                    .from('cursos')
+                    .select('*')
+                    .eq('id', cursoId)
+                    .single();
+
+                if (cursoError || !curso) {
+                    mostrarErro('O curso solicitado não existe ou foi removido.');
+                    return;
+                }
+
+                // Preenche os dados na tela
+                document.title = `${curso.titulo} - UniFATIX`;
+                document.getElementById('curso-titulo').textContent = curso.titulo;
+                document.getElementById('curso-descricao').textContent = curso.descricao || 'Descrição não disponível.';
+                document.getElementById('curso-carga').textContent = `${curso.carga_horaria} Horas`;
+
+                // 3. Busca o progresso existente do aluno neste curso
+                await carregarProgresso();
+
+                // Exibe o conteúdo principal
+                loadingEl.classList.add('hidden');
+                contentEl.classList.remove('hidden');
+
+            } catch (err) {
+                console.error(err);
+                mostrarErro('Erro inesperado ao carregar os dados do curso.');
+            }
+        }
+
+        async function carregarProgresso() {
+            const { data, error } = await supabase
+                .from('progresso_alunos')
+                .select('*')
+                .eq('user_id', usuarioAtual.id)
+                .eq('curso_id', cursoId)
+                .maybeSingle();
+
+            if (!error && data) {
+                progressoAtual = data.progresso_percentual || 0;
+                atualizarInterfaceProgresso(progressoAtual, data.status);
+            } else {
+                atualizarInterfaceProgresso(0, 'nao_iniciado');
+            }
+        }
+
+        async function salvarProgresso(novoPercentual) {
+            if (novoPercentual > 100) novoPercentual = 100;
+            const novoStatus = novoPercentual === 100 ? 'concluido' : 'em_andamento';
+
+            const { error } = await supabase
+                .from('progresso_alunos')
+                .upsert({
+                    user_id: usuarioAtual.id,
+                    curso_id: cursoId,
+                    progresso_percentual: novoPercentual,
+                    status: novoStatus,
+                    updated_at: new Date().toISOString()
+                }, { onConflict: 'user_id, curso_id' });
+
+            if (error) {
+                alert('Erro ao salvar progresso: ' + error.message);
+                return;
+            }
+
+            progressoAtual = novoPercentual;
+            atualizarInterfaceProgresso(progressoAtual, novoStatus);
+        }
+
+        function atualizarInterfaceProgresso(percentual, status) {
+            document.getElementById('progresso-texto').textContent = `${percentual}%`;
+            document.getElementById('progresso-barra').style.width = `${percentual}%`;
+
+            const badge = document.getElementById('curso-status-badge');
+            if (status === 'concluido' || percentual === 100) {
+                badge.textContent = 'Concluído';
+                badge.className = 'text-xs font-bold bg-emerald-100 text-emerald-800 py-1.5 px-3.5 rounded-full';
+            } else if (percentual > 0) {
+                badge.textContent = 'Em andamento';
+                badge.className = 'text-xs font-bold bg-amber-100 text-amber-800 py-1.5 px-3.5 rounded-full';
+            } else {
+                badge.textContent = 'Não iniciado';
+                badge.className = 'text-xs font-semibold bg-gray-100 text-gray-700 py-1.5 px-3.5 rounded-full';
+            }
+        }
+
+        function mostrarErro(mensagem) {
+            loadingEl.classList.add('hidden');
+            errorMsgEl.textContent = mensagem;
+            errorEl.classList.remove('hidden');
+        }
+
+        // Eventos dos botões
+        document.getElementById('btn-avancar').addEventListener('click', () => {
+            salvarProgresso(progressoAtual + 25);
         });
 
-        function fazerLogout() {
-            localStorage.removeItem('unifatix_user');
-            window.location.href = '../login.html';
-        }
+        document.getElementById('btn-concluir').addEventListener('click', () => {
+            salvarProgresso(100);
+        });
+
+        inicializarPagina();
     </script>
 </body>
 </html>

@@ -3,89 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniFATIX | Catálogo de Cursos</title>
-    <link rel="stylesheet" href="../style.css">
-    <!-- Script de proteção de sessão -->
-    <script src="../auth-guard.js" defer></script>
+    <title>Catálogo de Cursos - UniFATIX</title>
+    <!-- Tailwind CSS para estilização rápida e responsiva -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="student-dashboard">
-    <!-- Cabeçalho Principal -->
-    <header class="portal-header">
-        <div class="logo-area">
-            <h1>Uni<span>FATIX</span></h1>
-            <span class="badge-portal">Área do Aluno</span>
-        </div>
-        <nav class="portal-nav">
-            <a href="../index.html">Início</a>
-            <a href="catalogo-completo.html" class="active">Cursos</a>
-            <a href="cronograma.html">Cronograma</a>
-            <a href="certificados.html">Meus Certificados</a>
-        </nav>
-        <div class="user-menu">
-            <span id="user-welcome-name">Estudante</span>
-            <button class="btn-logout" onclick="fazerLogout()">Sair</button>
-        </div>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Cabeçalho -->
+    <header class="bg-blue-900 text-white shadow-md py-4 px-6 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">UniFATIX - Catálogo de Cursos</h1>
+        <a href="../index.html" class="bg-blue-700 hover:bg-blue-600 px-4 py-2 rounded text-sm transition">Voltar ao Portal</a>
     </header>
 
     <!-- Conteúdo Principal -->
-    <main class="dashboard-container">
-        <section class="welcome-banner">
-            <h2>Catálogo Completo de Cursos</h2>
-            <p>Explore nossa grade de Normas Reguladoras (NRs), capacitações técnicas e especializações de pós-graduação.</p>
-        </section>
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">Nossos Cursos e Pós-Graduações</h2>
 
-        <section class="courses-overview">
-            <h3>Cursos Disponíveis para Matrícula</h3>
-            <div class="courses-grid">
-                <!-- Curso 1 -->
-                <div class="course-card">
-                    <h4>Segurança em Instalações Elétricas (NR-10)</h4>
-                    <p class="progress-text">Carga Horária: 40h</p>
-                    <p class="progress-text">Categoria: Norma Reguladora</p>
-                    <a href="curso.html" class="btn-continue">Acessar Curso</a>
-                </div>
-
-                <!-- Curso 2 -->
-                <div class="course-card">
-                    <h4>Trabalho em Altura (NR-35)</h4>
-                    <p class="progress-text">Carga Horária: 16h</p>
-                    <p class="progress-text">Categoria: Norma Reguladora</p>
-                    <a href="curso.html" class="btn-continue">Acessar Curso</a>
-                </div>
-
-                <!-- Curso 3 -->
-                <div class="course-card">
-                    <h4>Engenharia DevOps & Cloud Computing</h4>
-                    <p class="progress-text">Carga Horária: 360h</p>
-                    <p class="progress-text">Categoria: Pós-Graduação</p>
-                    <a href="curso.html" class="btn-continue">Acessar Curso</a>
-                </div>
-            </div>
-        </section>
+        <!-- Grid onde os cursos serão injetados via JavaScript -->
+        <div id="cursos-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Os cards dos cursos aparecerão aqui dinamicamente -->
+            <p class="text-gray-500 col-span-full text-center py-10">Carregando cursos do sistema...</p>
+        </div>
     </main>
 
-    <!-- Rodapé -->
-    <footer class="portal-footer">
-        <p>&copy; 2026 UniFATIX - MGRUPO. Todos os direitos reservados.</p>
-    </footer>
+    <!-- Script de Conexão e Renderização -->
+    <script type="module">
+        // Importe ou inicialize o seu cliente Supabase (ajuste o caminho conforme sua estrutura)
+        import { supabase } from '../supabase.js'; // ou use as credenciais diretas se preferir
 
-    <!-- Script de Logout e Usuário -->
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const sessionUser = localStorage.getItem('unifatix_user');
-            if (sessionUser) {
-                const user = JSON.parse(sessionUser);
-                const nameSpan = document.getElementById('user-welcome-name');
-                if (nameSpan && user.name) {
-                    nameSpan.textContent = user.name;
+        async function carregarCursos() {
+            const container = document.getElementById('cursos-grid');
+
+            try {
+                // Busca os cursos na tabela 'cursos' do Supabase ordenada por título
+                const { data: cursos, error } = await supabase
+                    .from('cursos')
+                    .select('*')
+                    .order('titulo', { ascending: true });
+
+                if (error) {
+                    throw error;
                 }
-            }
-        });
 
-        function fazerLogout() {
-            localStorage.removeItem('unifatix_user');
-            window.location.href = '../login.html';
+                if (!cursos || cursos.length === 0) {
+                    container.innerHTML = `<p class="text-gray-500 col-span-full text-center py-10">Nenhum curso cadastrado no momento.</p>`;
+                    return;
+                }
+
+                // Limpa o container e renderiza os cards
+                container.innerHTML = '';
+                cursos.forEach(curso => {
+                    const card = document.createElement('div');
+                    card.className = "bg-white rounded-lg shadow-md p-6 flex flex-col justify-between border border-gray-200 hover:shadow-lg transition";
+                    card.innerHTML = `
+                        <div>
+                            <span class="text-xs font-semibold bg-blue-100 text-blue-800 py-1 px-3 rounded-full uppercase">${curso.carga_horaria} Horas</span>
+                            <h3 class="text-xl font-bold text-gray-900 mt-4 mb-2">${curso.titulo}</h3>
+                            <p class="text-gray-600 text-sm mb-4">${curso.descricao || 'Sem descrição informada.'}</p>
+                        </div>
+                        <a href="curso.html?id=${curso.id}" class="mt-auto bg-blue-600 hover:bg-blue-700 text-white text-center py-2 px-4 rounded font-medium transition">
+                            Acessar Curso
+                        </a>
+                    `;
+                    container.appendChild(card);
+                });
+
+            } catch (err) {
+                console.error('Erro ao buscar cursos:', err.message);
+                container.innerHTML = `<p class="text-red-500 col-span-full text-center py-10">Erro ao carregar os cursos. Verifique a conexão com o banco.</p>`;
+            }
         }
+
+        // Executa a função ao carregar a página
+        carregarCursos();
     </script>
 </body>
 </html>
