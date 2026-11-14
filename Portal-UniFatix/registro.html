@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Aluno - UniFATIX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-6">
+    <div class="max-w-md w-full bg-white rounded-xl shadow-md border border-slate-200 p-8">
+        <div class="text-center mb-6">
+            <h1 class="text-2xl font-extrabold text-blue-950">UniFATIX</h1>
+            <p class="text-xs text-slate-500 uppercase tracking-wider mt-1">Crie sua conta de estudante</p>
+        </div>
+
+        <form id="form-registro" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nome Completo</label>
+                <input type="text" id="nome" required class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-600" placeholder="Seu nome completo">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">CPF</label>
+                <input type="text" id="cpf" required class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-600" placeholder="000.000.000-00">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">WhatsApp</label>
+                <input type="text" id="whatsapp" required class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-600" placeholder="(00) 00000-0000">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">E-mail</label>
+                <input type="email" id="email" required class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-600" placeholder="seu@email.com">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Senha</label>
+                <input type="password" id="senha" required minlength="6" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-600" placeholder="Mínimo de 6 caracteres">
+            </div>
+
+            <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2.5 rounded-lg text-sm transition">
+                Concluir Cadastro e Acessar
+            </button>
+        </form>
+
+        <p class="text-center text-xs text-slate-600 mt-4">
+            Já possui uma conta? <a href="login.html" class="text-blue-700 font-semibold hover:underline">Faça login</a>
+        </p>
+    </div>
+
+    <script type="module">
+        import { supabase } from './supabase.js';
+
+        document.getElementById('form-registro').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nome = document.getElementById('nome').value.trim();
+            const cpf = document.getElementById('cpf').value.trim();
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('senha').value;
+
+            // 1. Cadastra no Auth do Supabase com metadados básicos
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: { role: 'aluno', name: nome }
+                }
+            });
+
+            if (error) {
+                alert('Erro no cadastro: ' + error.message);
+                return;
+            }
+
+            if (data.user) {
+                // 2. Insere os dados complementares na tabela 'perfis'
+                const { error: perfilError } = await supabase.from('perfis').insert([{
+                    id: data.user.id,
+                    nome_completo: nome,
+                    cpf,
+                    whatsapp,
+                    email
+                }]);
+
+                if (perfilError) {
+                    console.error('Erro ao salvar perfil:', perfilError.message);
+                }
+
+                alert('Cadastro realizado com sucesso! Redirecionando...');
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
