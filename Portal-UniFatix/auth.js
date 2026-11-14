@@ -1,11 +1,11 @@
 import { supabase } from './supabase.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+function initAuth() {
     const loginForm = document.getElementById('login-form') || document.getElementById('form-login');
     const errorBox = document.getElementById('error-message') || document.getElementById('login-error');
 
     if (!loginForm) {
-        console.warn('Formulário de login não encontrado nesta página.');
+        console.warn('Formulário de login não encontrado, aguardando...');
         return;
     }
 
@@ -66,4 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAuth);
+} else {
+    initAuth();
+}
