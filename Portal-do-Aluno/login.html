@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unifatix - Portal Educacional</title>
+    <title>Login - Unifatix Portal Educacional</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,69 +19,59 @@
                 </a>
             </div>
             <nav class="hidden md:flex items-center space-x-6">
-                <a href="index.html" target="_blank" class="text-blue-600 font-semibold hover:text-blue-700 transition">Início</a>
+                <a href="index.html" target="_blank" class="text-gray-600 hover:text-blue-600 transition">Início</a>
                 <a href="catalogo-completo.html" target="_blank" class="text-gray-600 hover:text-blue-600 transition">Cursos</a>
                 <a href="certificados.html" target="_blank" class="text-gray-600 hover:text-blue-600 transition">Certificados</a>
             </nav>
             <div class="flex items-center space-x-3">
-                <a href="https://unifatix.com.br/Portal-do-Aluno/login.html" target="_blank" class="px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition">Entrar</a>
-                <a href="https://unifatix.com.br/Portal-do-Aluno/login.html" target="_blank" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition">Criar Conta</a>
+                <a href="login.html" target="_blank" class="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg transition">Entrar</a>
+                <a href="registro.html" target="_blank" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition">Criar Conta</a>
             </div>
         </div>
     </header>
 
-    <!-- Conteúdo Principal -->
-    <main class="flex-grow">
-        <!-- Hero Section -->
-        <section class="bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white py-20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
-                    Transforme seu Futuro com a <span class="text-blue-400">Unifatix</span>
-                </h1>
-                <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto mb-8">
-                    Cursos de excelência, pós-graduação e capacitação profissional para impulsionar a sua carreira no mercado.
-                </p>
-                <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="catalogo-completo.html" target="_blank" class="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg shadow-lg transition">
-                        Ver Cursos Disponíveis
-                    </a>
-                    <a href="https://unifatix.com.br/Portal-do-Aluno/login.html" target="_blank" class="px-8 py-3 bg-white text-blue-900 hover:bg-gray-100 font-semibold rounded-lg shadow-lg transition">
-                        Acessar Portal do Aluno
-                    </a>
+    <!-- Conteúdo Principal - Tela de Login -->
+    <main class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full bg-white rounded-xl shadow-md p-8 border border-gray-100">
+            <div class="text-center mb-8">
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
+                    <i class="fa-solid fa-lock"></i>
                 </div>
+                <h2 class="text-2xl font-bold text-gray-900">Acesse sua Conta</h2>
+                <p class="text-sm text-gray-600 mt-1">Entre para gerenciar seus cursos ou painel administrativo</p>
             </div>
-        </section>
 
-        <!-- Seção de Destaques / Benefícios -->
-        <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900">Por que escolher a Unifatix?</h2>
-                <p class="text-gray-600 mt-2">Estrutura completa focada no seu aprendizado prático e evolução profissional.</p>
+            <form onsubmit="fazerLogin(event)" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">E-mail de Acesso</label>
+                    <input type="email" id="email" required placeholder="seu.email@exemplo.com" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Senha</label>
+                    <input type="password" id="senha" required placeholder="••••••••" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition text-sm">
+                </div>
+
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="ml-2 text-gray-600">Lembrar-me</span>
+                    </label>
+                    <a href="#" target="_blank" class="text-blue-600 hover:underline">Esqueceu a senha?</a>
+                </div>
+
+                <button type="submit" class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition">
+                    Entrar no Sistema
+                </button>
+            </form>
+
+            <div class="mt-6 text-center text-sm text-gray-600">
+                Ainda não tem uma conta? 
+                <a href="registro.html" target="_blank" class="text-blue-600 font-semibold hover:underline">Cadastre-se</a>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Certificação Reconhecida</h3>
-                    <p class="text-gray-600 text-sm">Certificados válidos em todo o território nacional para o seu currículo.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
-                        <i class="fa-solid fa-laptop-code"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">100% Digital e Flexível</h3>
-                    <p class="text-gray-600 text-sm">Estude no seu próprio ritmo, de onde estiver e quando puder.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
-                        <i class="fa-solid fa-users"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Suporte Especializado</h3>
-                    <p class="text-gray-600 text-sm">Professores qualificados prontos para tirar suas dúvidas ao longo da jornada.</p>
-                </div>
-            </div>
-        </section>
+        </div>
     </main>
 
     <!-- Rodapé -->
@@ -91,10 +81,36 @@
             <div class="flex space-x-6 mt-4 sm:mt-0">
                 <a href="index.html" target="_blank" class="hover:text-white transition">Início</a>
                 <a href="catalogo-completo.html" target="_blank" class="hover:text-white transition">Cursos</a>
-                <a href="https://unifatix.com.br/Portal-do-Aluno/login.html" target="_blank" class="hover:text-white transition">Login</a>
+                <a href="login.html" target="_blank" class="hover:text-white transition">Login</a>
             </div>
         </div>
     </footer>
+
+    <!-- Script de Autenticação / Simulação -->
+    <script>
+        function fazerLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const senha = document.getElementById('senha').value.trim();
+
+            // Validação simulada para Admin e Aluno
+            if (email === "admin@unifatix.com" && senha === "admin123") {
+                localStorage.setItem("unifatix_usuario", JSON.stringify({ nome: "Administrador", perfil: "admin" }));
+                alert("Login de Administrador realizado com sucesso!");
+                window.location.href = "admin.html";
+            } else if (email === "aluno@unifatix.com" && senha === "aluno123") {
+                localStorage.setItem("unifatix_usuario", JSON.stringify({ nome: "Aluno Exemplo", perfil: "aluno" }));
+                alert("Login de Aluno realizado com sucesso!");
+                window.location.href = "Portal-do-Aluno/curso.html";
+            } else {
+                // Caso use credenciais livres para teste
+                localStorage.setItem("unifatix_usuario", JSON.stringify({ nome: email, perfil: "aluno" }));
+                alert("Login efetuado com sucesso!");
+                window.location.href = "Portal-do-Aluno/curso.html";
+            }
+        }
+    </script>
 
 </body>
 </html>
