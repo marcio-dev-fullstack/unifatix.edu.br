@@ -3,74 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniFATIX | Autenticação</title>
+    <title>Unifatix - Portal Educacional</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-950 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gray-50 min-h-screen flex flex-col justify-between text-gray-800">
 
-    <div class="max-w-4xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
-        
-        <!-- Lado Esquerdo: Institucional -->
-        <div class="bg-slate-900 text-white p-10 flex flex-col justify-between">
-            <div>
-                <h1 class="text-3xl font-extrabold tracking-wide text-blue-400">UniFATIX</h1>
-                <p class="text-slate-300 text-sm mt-4 leading-relaxed">
-                    Plataforma de Educação a Distância, Pós-Graduação e Qualificação Profissional.
-                </p>
-
-                <ul class="mt-8 space-y-3 text-sm text-slate-300">
-                    <li class="flex items-center gap-2">
-                        <span class="text-emerald-400 font-bold">✓</span> Certificados com Validação Digital
-                    </li>
-                    <li class="flex items-center gap-2">
-                        <span class="text-emerald-400 font-bold">✓</span> Cursos de Pós-Graduação e NRs
-                    </li>
-                    <li class="flex items-center gap-2">
-                        <span class="text-emerald-400 font-bold">✓</span> Matrícula e Liberação Automatizadas
-                    </li>
-                </ul>
+    <!-- Header / Navegação -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <a href="index.html" class="text-2xl font-black text-blue-600 tracking-wider">
+                    UNIFATIX
+                </a>
             </div>
-
-            <div class="mt-10 pt-6 border-t border-slate-800 text-xs text-slate-400">
-                © 2026 UniFATIX • Portal Acadêmico
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="index.html" class="text-blue-600 font-semibold hover:text-blue-700 transition">Início</a>
+                <a href="catalogo-completo.html" class="text-gray-600 hover:text-blue-600 transition">Cursos</a>
+                <a href="certificados.html" class="text-gray-600 hover:text-blue-600 transition">Certificados</a>
+            </nav>
+            <div class="flex items-center space-x-3">
+                <a href="https://unifatix.com.br/Portal-do-Aluno/login.html" class="px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition">Entrar</a>
+                <a href="registro.html" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition">Criar Conta</a>
             </div>
         </div>
+    </header>
 
-        <!-- Lado Direito: Formulário de Login -->
-        <div class="p-10 flex flex-col justify-center">
-            <h2 class="text-2xl font-bold text-slate-900 mb-6">Acesse sua Conta</h2>
-
-            <form id="login-form" class="space-y-4">
-                <div>
-                    <label for="email" class="block text-xs font-bold text-slate-700 uppercase mb-1">E-mail Cadastrado</label>
-                    <input type="email" id="email" required placeholder="seu@email.com"
-                           class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-blue-600">
-                </div>
-
-                <div>
-                    <label for="password" class="block text-xs font-bold text-slate-700 uppercase mb-1">Senha</label>
-                    <input type="password" id="password" required placeholder="••••••••"
-                           class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-blue-600">
-                </div>
-
-                <div id="error-message" class="hidden bg-red-50 border border-red-200 text-red-600 text-xs p-3 rounded-lg font-medium"></div>
-
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg text-sm transition shadow-sm">
-                    Entrar no Sistema
-                </button>
-            </form>
-
-            <div class="mt-6 pt-5 border-t border-slate-100 text-center">
-                <p class="text-xs text-slate-600">
-                    Ainda não é aluno UniFATIX? 
-                    <a href="registro.html" class="text-blue-700 font-bold hover:underline">Cadastre-se gratuitamente</a>
+    <!-- Conteúdo Principal -->
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+                    Transforme seu Futuro com a <span class="text-blue-400">Unifatix</span>
+                </h1>
+                <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto mb-8">
+                    Cursos de excelência, pós-graduação e capacitação profissional para impulsionar a sua carreira no mercado.
                 </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="catalogo-completo.html" class="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg shadow-lg transition">
+                        Ver Cursos Disponíveis
+                    </a>
+                    <a href="https://unifatix.com.br/Portal-do-Aluno/login.html" class="px-8 py-3 bg-white text-blue-900 hover:bg-gray-100 font-semibold rounded-lg shadow-lg transition">
+                        Acessar Portal do Aluno
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Destaques / Benefícios -->
+        <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900">Por que escolher a Unifatix?</h2>
+                <p class="text-gray-600 mt-2">Estrutura completa focada no seu aprendizado prático e evolução profissional.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Certificação Reconhecida</h3>
+                    <p class="text-gray-600 text-sm">Certificados válidos em todo o território nacional para o seu currículo.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">100% Digital e Flexível</h3>
+                    <p class="text-gray-600 text-sm">Estude no seu próprio ritmo, de onde estiver e quando puder.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Suporte Especializado</h3>
+                    <p class="text-gray-600 text-sm">Professores qualificados prontos para tirar suas dúvidas ao longo da jornada.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-gray-900 text-gray-400 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between">
+            <p class="text-sm">&copy; 2026 Unifatix. Todos os direitos reservados.</p>
+            <div class="flex space-x-6 mt-4 sm:mt-0">
+                <a href="index.html" class="hover:text-white transition">Início</a>
+                <a href="catalogo-completo.html" class="hover:text-white transition">Cursos</a>
+                <a href="https://unifatix.com.br/Portal-do-Aluno/login.html" class="hover:text-white transition">Login</a>
             </div>
         </div>
+    </footer>
 
-    </div>
-
-    <script type="module" src="auth.js"></script>
 </body>
 </html>
