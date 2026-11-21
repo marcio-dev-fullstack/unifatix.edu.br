@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Certificados - ZENTIX Cursos e Capacitações</title>
+    <title>Gerador de Certificados - UNIFATIX Cursos e Capacitações</title>
     <!-- Biblioteca externa para QR Code -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <!-- Biblioteca para conversão do HTML em PDF -->
@@ -170,10 +170,13 @@
         }
 
         .cert-logo {
-            max-width: 125px;
+            max-width: 210px;
+            max-height: 70px;
+            width: auto;
             height: auto;
-            margin: 0 auto 2px auto;
+            margin: 0 auto 4px auto;
             display: block;
+            object-fit: contain;
         }
 
         .cert-header {
@@ -358,11 +361,6 @@
 <div class="container">
     <div class="form-container">
         <h2>Dados do Certificado</h2>
-        
-        <div class="form-group">
-            <label>Logo da Empresa (Arquivo)</label>
-            <input type="file" id="inLogoFile" accept="image/*" onchange="loadFile(event, 'outLogo')">
-        </div>
 
         <div class="form-group">
             <label>Assinatura da Direção (Arquivo)</label>
@@ -397,7 +395,7 @@
         <div class="form-group">
             <label>Código de Registro (Gerado Automático)</label>
             <div class="input-group-code">
-                <input type="text" id="inCodigo" value="" placeholder="Ex: ZENTIX-2026-0000001" oninput="updateCert()">
+                <input type="text" id="inCodigo" value="" placeholder="Ex: UNIFATIX-2026-0000001" oninput="updateCert()">
                 <button type="button" class="btn-gen-code" title="Gerar Novo Código" onclick="generateRandomCode()">🔄</button>
             </div>
         </div>
@@ -418,10 +416,10 @@
         <!-- FRENTE -->
         <div class="certificate-page">
             <div class="border-frame"></div>
-            <img src="04.png" alt="Marca D'água" class="watermark">
+            <img src="../img/logo01.png" alt="Marca D'água UNIFATIX" class="watermark" onerror="if(!this.dataset.fb){this.dataset.fb='1';this.src='img/logo01.png';}">
             
             <div class="cert-header">
-                <img id="outLogo" src="img/022.png" alt="ZENTIX Logo" class="cert-logo">
+                <img id="outLogo" src="../img/logo01.png" alt="Logo UNIFATIX" class="cert-logo" onerror="if(!this.dataset.fb){this.dataset.fb='1';this.src='img/logo01.png';}">
                 <p>Cursos e Capacitações</p>
                 <h1>Certificado de Conclusão</h1><br><br><br><br>
             </div>
@@ -443,20 +441,18 @@
                 </div>
 
                 <div class="company-info">
-                    <p><strong>ZENTIX Cursos e Capacitações</strong></p>
-                    <p style="font-size: 0.8rem; color: #555;">CNPJ: 68.664.946/0001-96</p>
+                    <p><strong>UNIFATIX Cursos e Capacitações</strong></p>
+                    <p style="font-size: 0.8rem; color: #555;">CNPJ: 70.001.306/0001-48</p>
                 </div>
 
-                <div class="date-location">
-                    Goiânia - GO, <span id="outDataAtualExtenso"></span>.
-                </div>
+                <div class="date-location" id="outLocalData">Goiânia - GO</div>
             </div>
         </div>
 
         <!-- VERSO -->
         <div class="certificate-page">
             <div class="border-frame"></div>
-            <img src="04.png" alt="Marca D'água" class="watermark">
+            <img src="../img/logo01.png" alt="Marca D'água UNIFATIX" class="watermark" onerror="if(!this.dataset.fb){this.dataset.fb='1';this.src='img/logo01.png';}">
 
             <div class="verso-container-top">
                 <h2 class="verso-title">Conteúdo Programático</h2><br><br>
@@ -473,7 +469,7 @@
                     <p><strong>Autenticidade do Documento:</strong></p>
                     <p>Para verificar a validade deste certificado, aponte a câmera para o QR Code ao lado.</p>
                     <br>
-                    <p style="font-size: 0.72rem; color: #888;">ZENTIX Cursos e Capacitações – CNPJ 68.664.946/0001-96 – Goiânia/GO</p>
+                    <p style="font-size: 0.72rem; color: #888;">UNIFATIX Cursos e Capacitações – CNPJ 70.001.306/0001-48 – Goiânia/GO</p>
                 </div>
 
                 <div class="qr-code-box">
@@ -492,7 +488,7 @@
     function generateRandomCode() {
         const year = new Date().getFullYear();
         const randomNumber = Math.floor(Math.random() * 10000000).toString().padStart(7, '0');
-        const code = `ZENTIX-${year}-${randomNumber}`;
+        const code = `UNIFATIX-${year}-${randomNumber}`;
         document.getElementById('inCodigo').value = code;
         updateCert();
     }
@@ -534,13 +530,15 @@
         const codigo = document.getElementById('inCodigo').value.trim();
         const ementa = document.getElementById('inEmenta').value;
 
+        const dataExtenso = formatDateExtenso(dataConclusao);
+
         // Atualizar visualização
         document.getElementById('outAluno').innerText = aluno;
         document.getElementById('outCurso').innerText = curso;
         document.getElementById('outCH').innerText = ch;
         document.getElementById('outProfessorDisplay').innerText = prof;
         document.getElementById('outDataConclusaoFrente').innerText = formatDate(dataConclusao);
-        document.getElementById('outDataAtualExtenso').innerText = formatDateExtenso(dataConclusao);
+        document.getElementById('outLocalData').innerText = dataExtenso ? `Goiânia - GO, ${dataExtenso}.` : 'Goiânia - GO';
 
         document.getElementById('outCursoVerso').innerText = curso;
         document.getElementById('outCHVerso').innerText = ch;
@@ -569,7 +567,7 @@
             data: formatDate(dataConclusao)
         });
 
-        const urlValida = `https://mgrupo.online/valida.html?${params.toString()}`;
+        const urlValida = `https://unifatix.com.br/cursos-tecnicos/autencicacao.html?${params.toString()}`;
 
         // Gerar QR Code
         document.getElementById('qrcode').innerHTML = "";
