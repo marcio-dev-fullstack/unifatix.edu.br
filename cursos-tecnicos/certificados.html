@@ -308,10 +308,17 @@
         }
 
         .validation-info {
-            max-width: 65%;
+            max-width: 72%;
             font-size: 0.78rem;
             color: #555;
-            line-height: 1.3;
+            line-height: 1.35;
+        }
+
+        .validation-url {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            word-break: break-all;
         }
 
         .qr-code-box {
@@ -321,22 +328,23 @@
         }
 
         #qrcode {
-            width: 96px;
-            height: 96px;
+            width: 104px;
+            height: 104px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: #ffffff;
             padding: 4px;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
             border-radius: 4px;
         }
 
         #qrcode img,
         #qrcode canvas {
-            width: 88px !important;
-            height: 88px !important;
+            width: 96px !important;
+            height: 96px !important;
             display: block;
+            image-rendering: pixelated;
         }
 
         @media print {
@@ -481,9 +489,12 @@
             <div class="verso-footer">
                 <div class="validation-info">
                     <p><strong>Autenticidade do Documento:</strong></p>
-                    <p>Para verificar a validade deste certificado, aponte a câmera para o QR Code ao lado.</p>
-                    <p style="margin-top: 4px; font-size: 0.72rem; color: #333;"><strong>Código:</strong> <span id="outCodigoVerso"></span></p>
-                    <p style="font-size: 0.72rem; color: #888;">UNIFATIX Cursos e Capacitações – CNPJ 70.001.306/0001-48 – Goiânia/GO</p>
+                    <p>Para verificar a validade deste certificado, aponte a câmera para o QR Code ao lado ou acesse:</p>
+                    <p style="margin-top: 2px; font-size: 0.75rem;">
+                        <a href="https://unifatix.com.br/cursos-tecnicos/autenticacao.html" target="_blank" class="validation-url">https://unifatix.com.br/cursos-tecnicos/autenticacao.html</a>
+                    </p>
+                    <p style="margin-top: 4px; font-size: 0.74rem; color: #333;"><strong>Código de Registro:</strong> <span id="outCodigoVerso"></span></p>
+                    <p style="margin-top: 3px; font-size: 0.72rem; color: #888;">UNIFATIX Cursos e Capacitações – CNPJ 70.001.306/0001-48 – Goiânia/GO</p>
                 </div>
 
                 <div class="qr-code-box">
@@ -536,23 +547,11 @@
     }
 
     function getValidationUrl() {
-        const aluno = document.getElementById('inAluno').value;
-        const curso = document.getElementById('inCurso').value;
-        const ch = document.getElementById('inCH').value;
-        const prof = document.getElementById('inProfessor').value;
-        const dataConclusao = document.getElementById('inDataConclusao').value;
         const codigo = document.getElementById('inCodigo').value.trim();
-
         const params = new URLSearchParams({
-            codigo: codigo,
-            aluno: aluno,
-            curso: curso,
-            ch: ch,
-            prof: prof,
-            data: formatDate(dataConclusao)
+            codigo: codigo
         });
-
-        return `https://unifatix.com.br/cursos-tecnicos/autencicacao.html?${params.toString()}`;
+        return `https://unifatix.com.br/cursos-tecnicos/autenticacao.html?${params.toString()}`;
     }
 
     function renderQrCode(text) {
@@ -564,12 +563,26 @@
 
         qrcodeObj = new QRCode(qrContainer, {
             text: text,
-            width: 176,
-            height: 176,
-            colorDark: "#1a365d",
+            width: 240,
+            height: 240,
+            colorDark: "#000000",
             colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.M
+            correctLevel: QRCode.CorrectLevel.L
         });
+
+        setTimeout(() => {
+            const canvas = qrContainer.querySelector('canvas');
+            const img = qrContainer.querySelector('img');
+            if (canvas) {
+                const dataUrl = canvas.toDataURL('image/png');
+                qrContainer.innerHTML = `<img src="${dataUrl}" alt="QR Code Validação" style="width:96px;height:96px;display:block;image-rendering:pixelated;">`;
+            } else if (img) {
+                img.style.width = '96px';
+                img.style.height = '96px';
+                img.style.display = 'block';
+                img.style.imageRendering = 'pixelated';
+            }
+        }, 30);
     }
 
     function updateCert() {
@@ -634,7 +647,7 @@
         const opt = {
             margin: 0,
             filename: nomeArquivo,
-            image: { type: 'jpeg', quality: 0.98 },
+            image: { type: 'png', quality: 1 },
             html2canvas: { scale: 2, useCORS: true },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
         };
