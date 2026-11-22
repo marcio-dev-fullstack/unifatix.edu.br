@@ -328,8 +328,8 @@
         }
 
         #qrcode {
-            width: 104px;
-            height: 104px;
+            width: 108px;
+            height: 108px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -341,8 +341,8 @@
 
         #qrcode img,
         #qrcode canvas {
-            width: 96px !important;
-            height: 96px !important;
+            width: 100px !important;
+            height: 100px !important;
             display: block;
             image-rendering: pixelated;
         }
@@ -548,9 +548,20 @@
 
     function getValidationUrl() {
         const codigo = document.getElementById('inCodigo').value.trim();
-        const params = new URLSearchParams({
-            codigo: codigo
-        });
+        const aluno = document.getElementById('inAluno').value.trim();
+        const curso = document.getElementById('inCurso').value.trim();
+        const ch = document.getElementById('inCH').value.trim();
+        const prof = document.getElementById('inProfessor').value.trim();
+        const dataConclusao = formatDate(document.getElementById('inDataConclusao').value);
+
+        const params = new URLSearchParams();
+        if (codigo) params.set('codigo', codigo);
+        if (aluno) params.set('aluno', aluno);
+        if (curso) params.set('curso', curso);
+        if (ch) params.set('ch', ch);
+        if (prof) params.set('prof', prof);
+        if (dataConclusao) params.set('data', dataConclusao);
+
         return `https://unifatix.com.br/cursos-tecnicos/autenticacao.html?${params.toString()}`;
     }
 
@@ -563,8 +574,8 @@
 
         qrcodeObj = new QRCode(qrContainer, {
             text: text,
-            width: 240,
-            height: 240,
+            width: 260,
+            height: 260,
             colorDark: "#000000",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.L
@@ -575,10 +586,10 @@
             const img = qrContainer.querySelector('img');
             if (canvas) {
                 const dataUrl = canvas.toDataURL('image/png');
-                qrContainer.innerHTML = `<img src="${dataUrl}" alt="QR Code Validação" style="width:96px;height:96px;display:block;image-rendering:pixelated;">`;
+                qrContainer.innerHTML = `<img src="${dataUrl}" alt="QR Code Validação" style="width:100px;height:100px;display:block;image-rendering:pixelated;">`;
             } else if (img) {
-                img.style.width = '96px';
-                img.style.height = '96px';
+                img.style.width = '100px';
+                img.style.height = '100px';
                 img.style.display = 'block';
                 img.style.imageRendering = 'pixelated';
             }
