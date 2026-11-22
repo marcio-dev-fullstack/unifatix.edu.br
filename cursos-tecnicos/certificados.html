@@ -320,9 +320,23 @@
             align-items: center;
         }
 
-        #qrcode img {
-            border: 3px solid #fff;
-            box-shadow: 0 0 5px rgba(0,0,0,0.15);
+        #qrcode {
+            width: 96px;
+            height: 96px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            padding: 4px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        #qrcode img,
+        #qrcode canvas {
+            width: 88px !important;
+            height: 88px !important;
+            display: block;
         }
 
         @media print {
@@ -468,7 +482,7 @@
                 <div class="validation-info">
                     <p><strong>Autenticidade do Documento:</strong></p>
                     <p>Para verificar a validade deste certificado, aponte a câmera para o QR Code ao lado.</p>
-                    <br>
+                    <p style="margin-top: 4px; font-size: 0.72rem; color: #333;"><strong>Código:</strong> <span id="outCodigoVerso"></span></p>
                     <p style="font-size: 0.72rem; color: #888;">UNIFATIX Cursos e Capacitações – CNPJ 70.001.306/0001-48 – Goiânia/GO</p>
                 </div>
 
@@ -521,6 +535,43 @@
         }
     }
 
+    function getValidationUrl() {
+        const aluno = document.getElementById('inAluno').value;
+        const curso = document.getElementById('inCurso').value;
+        const ch = document.getElementById('inCH').value;
+        const prof = document.getElementById('inProfessor').value;
+        const dataConclusao = document.getElementById('inDataConclusao').value;
+        const codigo = document.getElementById('inCodigo').value.trim();
+
+        const params = new URLSearchParams({
+            codigo: codigo,
+            aluno: aluno,
+            curso: curso,
+            ch: ch,
+            prof: prof,
+            data: formatDate(dataConclusao)
+        });
+
+        return `https://unifatix.com.br/cursos-tecnicos/autencicacao.html?${params.toString()}`;
+    }
+
+    function renderQrCode(text) {
+        const qrContainer = document.getElementById('qrcode');
+        qrContainer.innerHTML = "";
+        qrcodeObj = null;
+
+        if (!text) return;
+
+        qrcodeObj = new QRCode(qrContainer, {
+            text: text,
+            width: 176,
+            height: 176,
+            colorDark: "#1a365d",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.M
+        });
+    }
+
     function updateCert() {
         const aluno = document.getElementById('inAluno').value;
         const curso = document.getElementById('inCurso').value;
@@ -532,7 +583,6 @@
 
         const dataExtenso = formatDateExtenso(dataConclusao);
 
-        // Atualizar visualização
         document.getElementById('outAluno').innerText = aluno;
         document.getElementById('outCurso').innerText = curso;
         document.getElementById('outCH').innerText = ch;
@@ -543,8 +593,8 @@
         document.getElementById('outCursoVerso').innerText = curso;
         document.getElementById('outCHVerso').innerText = ch;
         document.getElementById('outEmenta').innerText = ementa;
+        document.getElementById('outCodigoVerso').innerText = codigo;
 
-        // Salvar no localStorage local
         if (codigo !== "") {
             const certData = {
                 aluno: aluno,
@@ -555,35 +605,12 @@
                 codigo: codigo
             };
             localStorage.setItem(codigo, JSON.stringify(certData));
-        }
-
-        // URL com parâmetros
-        const params = new URLSearchParams({
-            codigo: codigo,
-            aluno: aluno,
-            curso: curso,
-            ch: ch,
-            prof: prof,
-            data: formatDate(dataConclusao)
-        });
-
-        const urlValida = `https://unifatix.com.br/cursos-tecnicos/autencicacao.html?${params.toString()}`;
-
-        // Gerar QR Code
-        document.getElementById('qrcode').innerHTML = "";
-        if (codigo !== "") {
-            qrcodeObj = new QRCode(document.getElementById("qrcode"), {
-                text: urlValida,
-                width: 85,
-                height: 85,
-                colorDark : "#1a365d",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.M
-            });
+            renderQrCode(getValidationUrl());
+        } else {
+            renderQrCode("");
         }
     }
 
-    // Gerar e Baixar o PDF com nome do arquivo no padrão: Aluno - Curso - Data.pdf
     function salvarCertificadoPDF() {
         const aluno = document.getElementById('inAluno').value.trim();
         const curso = document.getElementById('inCurso').value.trim();
@@ -594,16 +621,13 @@
             return;
         }
 
-        // Formata data para DD-MM-AAAA (substitui barras por traços para compatibilidade de arquivo)
-        const dataFormatada = formatDate(dataConclusao).replace(/\//g, '-');
+        renderQrCode(getValidationUrl());
 
-        // Cria o nome do arquivo final
+        const dataFormatada = formatDate(dataConclusao).replace(/\//g, '-');
         let nomeArquivo = `${aluno} - ${curso}`;
         if (dataFormatada) {
             nomeArquivo += ` - ${dataFormatada}`;
         }
-        
-        // Remove caracteres especiais não permitidos em nomes de arquivos
         nomeArquivo = nomeArquivo.replace(/[\\/:*?"<>|]/g, '') + '.pdf';
 
         const element = document.getElementById('certPreview');
@@ -615,7 +639,9 @@
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
         };
 
-        html2pdf().set(opt).from(element).save();
+        setTimeout(() => {
+            html2pdf().set(opt).from(element).save();
+        }, 120);
     }
 
     window.onload = function() {
